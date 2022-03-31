@@ -1,13 +1,14 @@
-package test;
+package test2;
 
 public class Address {
-	public String hNo,sName,city;
+	public String hNo,SName,city;
 	public int pinCode;
 	public void getAddress() {
-	System.out.println("===Employee Address===");
-	System.out.println("HNo\t :"+hNo);
-	System.out.println("SName\t :"+sName);
-	System.out.println("City\t :"+city);
-	System.out.println("pincode\t :"+pinCode);
+		System.out.println("==Address==");
+		System.out.println("HNO :"+hNo);
+		System.out.println("SNAME :"+SName);
+		System.out.println("CITY :"+city);
+		System.out.println("PINCODE :"+pinCode);
 	}
+
 }
