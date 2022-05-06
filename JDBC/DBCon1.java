@@ -7,8 +7,8 @@ public class DBCon1 {
         	Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","manager"); //step-2
         	Statement stm = con.createStatement();                 //step-3
         	ResultSet rs = stm.executeQuery("select * from Employee44");//step-4
-        	while(rs.next())
-          {
+        	
+		while(rs.next()){
         		System.out.println(rs.getString(1)+"\t"+rs.getString(2)+"\t"+
         	         rs.getString(3)+"\t"+rs.getInt(4));
         	}
