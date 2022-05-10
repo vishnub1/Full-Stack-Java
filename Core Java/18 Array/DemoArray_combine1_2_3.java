@@ -1,6 +1,8 @@
 package array;
+import java.util.Arrays;
 import java.util.Scanner;
-public class DemoArray1 {
+import java.util.Spliterator;
+public class DemoArray_combine1_2_3 {
 	public static void main(String[] args) {
 		Scanner scn = new Scanner(System.in);
 		try(scn;){
@@ -16,8 +18,17 @@ public class DemoArray1 {
 				for(int i=0;i<a.length;i++) {
 					System.out.print(a[i].toString()+" ");
 				}
+				System.out.println("\n==DISPLAYING USING EXTENDED-FOR==");
+				for(Integer k: a) {
+					System.out.print(k.toString()+" ");
+				}
+				System.out.println("\n==Displaying using Spliterator<T>==");
+				Spliterator<Integer> sp = Arrays.spliterator(a);
+				sp.forEachRemaining((z)->{
+					System.out.print(z.toString()+" ");
+				});
 			}catch(Exception e) {
-			 e.printStackTrace();
+				e.printStackTrace();
 			}
 		}
 	}
