@@ -77,3 +77,25 @@ ENAME='SMITH';
 ENAME JOB SAL COMM NVL(COMM,0)+SAL
 ---------- --------- ---------- ---------- --------------- --------------------------
 SMITH CLERK 880 88
+
+
+
+
+
+ SELECT NVL(NULL,0) FROM DUAL;
+NVL(NULL,0)
+-----------
+ 0
+SQL> SELECT NVL(NULL,100) FROM DUAL;
+NVL(NULL,100)
+-------------
+ 100
+SQL> SELECT NVL(0,100) FROM DUAL;
+NVL(0,100)
+----------
+ 0
+SQL> SELECT ENAME, JOB, SAL, COMM, NVL (COMM,0)+SAL FROM EMP WHERE 
+ENAME='SMITH';
+ENAME JOB SAL COMM NVL(COMM,0)+SAL
+---------- --------- ---------- ---------- --------------- --------------------------
+SMITH CLERK 880 88
