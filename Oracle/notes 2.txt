@@ -1,0 +1,23 @@
+LIKE operator:-
+> SELECT * FROM emp WHERE ename LIKE '%S'
+EMPNO ENAME JOB MGR HIREDATE SAL COMM DEPTNO
+----------------------------------------------------------------------------------------------------------
+7566 JONES MANAGER 7839 02-APR-81 2975 20
+7876 ADAMS CLERK 7788 23-MAY-87 1100 20
+7900 JAMES CLERK 7698 03-DEC-81 950 30
+
+
+
+> SELECT * FROM emp WHERE ename LIKE '%S'
+EMPNO ENAME JOB MGR HIREDATE SAL COMM DEPTNO
+----------------------------------------------------------------------------------------------------------
+7566 JONES MANAGER 7839 02-APR-81 2975 20
+7876 ADAMS CLERK 7788 23-MAY-87 1100 20
+7900 JAMES CLERK 7698 03-DEC-81 950 30
+
+> SELECT * FROM emp WHERE ename LIKE '%S'
+EMPNO ENAME JOB MGR HIREDATE SAL COMM DEPTNO
+----------------------------------------------------------------------------------------------------------
+7566 JONES MANAGER 7839 02-APR-81 2975 20
+7876 ADAMS CLERK 7788 23-MAY-87 1100 20
+7900 JAMES CLERK 7698 03-DEC-81 950 30
