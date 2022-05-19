@@ -120,3 +120,86 @@ ENAME='SMITH';
 ENAME JOB SAL COMM NVL(COMM,0)+SAL
 ---------- --------- ---------- ---------- --------------- --------------------------
 SMITH CLERK 880 88
+
+
+
+
+
+ SELECT NVL(NULL,0) FROM DUAL;
+NVL(NULL,0)
+-----------
+ 0
+SQL> SELECT NVL(NULL,100) FROM DUAL;
+NVL(NULL,100)
+-------------
+ 100
+SQL> SELECT NVL(0,100) FROM DUAL;
+NVL(0,100)
+----------
+ 0
+SQL> SELECT ENAME, JOB, SAL, COMM, NVL (COMM,0)+SAL FROM EMP WHERE 
+ENAME='SMITH';
+ENAME JOB SAL COMM NVL(COMM,0)+SAL
+---------- --------- ---------- ---------- --------------- --------------------------
+SMITH CLERK 880 88
+
+
+
+ select empno,ename from emp 
+ Where deptno=10
+ minus
+ select empno,ename from emp 
+ where deptno=30 order by 1;
+ 
+ 
+ 
+ 
+ 
+ >(SELECT * FROM CUSTOMER_KNOWN_GOOD
+ MINUS
+ SELECT * FROM CUSTOMER_TEST)
+ UNION ALL
+ (SELECT * FROM CUSTOMER_TEST
+ MINUS
+ SELECT * FROM CUSTOMER_KNOWN_GOOD);
+ 
+ 
+ 
+ 
+ 
+ 
+ Sql>(SELECT C1.*, COUNT(*)
+FROM CUSTOMER_KNOWN_GOOD C1
+GROUP BY C1.CUST_NBR, C1.NAME
+MINUS
+SELECT C2.*, COUNT(*)
+FROM CUSTOMER_TEST C2
+GROUP BY C2.CUST_NBR, C2.NAME)
+UNION ALL
+(SELECT C3.*, COUNT(*)
+FROM CUSTOMER_TEST C3
+GROUP BY C3.CUST_NBR, C3.NAME
+MINUS
+SELECT C4.*, COUNT(*)
+FROM CUSTOMER_KNOWN_GOOD C4
+GROUP BY C4.CUST_NBR, C4.NAME);
+
+
+
+
+EX: Waq to display all employee details who are working in NARESHIT 
+organization?
+SELECT * FROM EMP_HYD UNION SELECT * FROM EMP_CHENNAI;
+(OR)
+SELECT * FROM EMP_HYD UNION ALL SELECT * FROM EMP_CHENNAI;
+EX: Waq to display employee details who are working in both branchs ?
+SELECT * FROM EMP_HYD INTERSECT SELECT * FROM EMP_CHENNAI;
+EX: Waq to display employee details who are working in HYD BUT NOT IN CHENNAI 
+branchs ?
+SELECT * FROM EMP_HYD MINUS SELECT * FROM EMP_CHENNAI;
+EX: Waq to display employee details who are working in CHENNAI BUT NOT IN HYD 
+branchs ?
+SELECT * FROM EMP_CHENNAI MINUS SELECT * FROM EMP_HYD
+
+
+
