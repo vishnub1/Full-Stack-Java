@@ -19,6 +19,7 @@ How to call a function:
 Syntax:
 ---------------
 Select <fname>(values) from dual;
+
 What is dual:
 > pre-define table in oracle.
 > having single column & single row
