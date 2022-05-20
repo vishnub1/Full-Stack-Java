@@ -59,6 +59,7 @@ Sql> select floor(9.8) from dual;------9
 Returns remainder value.
 Syntax:
 mod(m,n)
+
 Ex:
 Sql> select mod(10,2) from dual;-------0
 5) power():
