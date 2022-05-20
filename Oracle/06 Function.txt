@@ -84,6 +84,7 @@ Ex:
 Sql> select trunc(5.50) from dual;---------5
 Sql> select trunc(32.456,2) from dual;----32.45
 ==========================================================================
+
 String functions:
 Length():
 ------------------
