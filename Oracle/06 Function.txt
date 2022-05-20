@@ -85,6 +85,7 @@ Sql> select trunc(5.50) from dual;---------5
 Sql> select trunc(32.456,2) from dual;----32.45
 ==========================================================================
 
+
 String functions:
 Length():
 ------------------
@@ -96,6 +97,10 @@ Sql> select length('hello') from dual;------------------------5
 Sql> select length('good morning') from dual;--------12
 Sql> select ename,length(ename) from emp;
 Sql> select * from emp where length(ename)=4;
+
+
+
+
 Lower():
 ----------------
 To convert upper case char's into lower case char's.
@@ -104,12 +109,17 @@ lower(string)
 Ex:
 Sql> select lower('hello') from dual;
 Sql> update emp set ename=lower(ename) where job='clerk';
+
+
+
+
 Upper():
 ---------------
 Syntax:
 upper(string)
 Ex:
 Sql> select lower('hello') from dual;
+
 Initcap():
 ------------------
 To convert first char. Is capital.
@@ -118,6 +128,9 @@ initcap(string)
 Ex:
 Sql> select initcap('hello') from dual;
 Sql> select initcap('good morning') from dual;
+
+
+
 Ltirm():
 ---------------
 To remove unwanted spaces (or) unwanted characters from left side 
@@ -128,6 +141,9 @@ Ex:
 Sql> select ltrim(' sai') from dual;
 Sql> select ltrim('xxxxxxsai','x') from dual;
 Sql> select ltrim('123sai','123') from dual;
+
+
+
 Rtrim():
 To remove unwanted spaces (or) unwanted characters from right side 
 Of given string.
@@ -135,6 +151,10 @@ Syntax:
 rtrim(string1[,string2])
 Ex:
 Sql> select rtrim('saixxxxxxx','x') from dual;
+
+
+
+
 Trim():
 To remove unwanted spaces (or) unwanted characters from both sides 
 Of given string.
@@ -144,6 +164,8 @@ trim('trimming char' from 'string')
 Ex:
 Sql> select trim('x' from 'xxxxxxsaixxxx') from dual;
 Lpad():
+
+
 To fill a string with specific char. On left side of given
 String.
 Syntax:
@@ -169,6 +191,9 @@ Syntax:
 --------------
 concat(string1,string2)
 Ex:
+
+
+
 Sql> select concat('good','bye') from dual;
 Replace():
 -------------------
@@ -177,10 +202,15 @@ Syntax:
 ---------------
 replace(string1,string2,string3)
 Ex:
+
+
 Sql> select replace('hello','ell','xyz') from dual;
 Hxyzo
 Sql> select replace('hello','l','abc') from dual;
 Heabcabco
+
+
+
 Translate():
 ------------------------
 To translate a single char with another single char.
@@ -188,11 +218,18 @@ Syntax:
 --------------
 translate(string1,string2,string3)
 Ex:
+
+
+
 Sql> select translate('hello','elo','xyz') from dual;
 Hxyyz
 sol: e = x , l=y , o=z
 hello => hxyyz
 Ex:
+
+
+
+
 Sql> select ename,sal,translate(sal,'0123456789','$b@gh*v#t%') salary from emp;
 Ename sal salary
 ---------- --------------- -------------------------
@@ -233,6 +270,10 @@ Ex:
 Sql> select instr('hello welcome','e',-1,3) from dual;--------2
 Sql> select instr('hello welcome','l',-4,3) from dual;-------3
 Sql> select instr('hello welcome','l',-6,3) from dual;----------0
+
+
+
+
 ==========================================================================
 Date functions:
 ------------------------------
@@ -279,6 +320,12 @@ Sql> select months_between('05-jan-81','05-jan-80') from dual;----- 12
 Sql> select months_between('05-jan-80','05-jan-81') from dual;----- -12
 Note: here, date1 is always greater than date2 otherwise
  oracle returns nagative value.
+ 
+ 
+ 
+ 
+ 
+ 
 =======================================================================
 Conversion functions:
 -------------------------------------------
