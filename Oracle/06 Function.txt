@@ -1,0 +1,482 @@
+Functions:
+> to perform task & must return value.
+> oracle supports two types functions.those are
+1) pre-define / built in functions (use in sql & pl/sql)
+2) user define functions ( use in pl/sql)
+1) pre-define functions:
+> these are again classified into two categories.
+a) single row functions (scalar functions)
+b) multiple row functions(grouping functions)
+Single row functions:
+> these functions are returns a single row (or) a single value.
+> numeric functions
+> string functions
+> date functions
+> conversion functions
+How to call a function:
+Syntax:
+---------------
+Select <fname>(values) from dual;
+What is dual:
+> pre-define table in oracle.
+> having single column & single row
+> is called as dummy table in oracle.
+> testing functions(pre-define & user define) functionalities. 
+To view strc.of dual table:
+----------------------------------------------------
+Sql> desc dual;
+To view data of dual table:
+----------------------------------------------------
+Sql> select * from dual;
+Numeric functions:
+--------------------------------------
+1) abs():
+> converts (-ve) value into (+ve) value.
+Syntax:
+---------------
+abs(number)
+Ex:
+Sql> select abs(-12) from dual; --------> 12
+Sql> select ename,sal,comm,abs(comm-sal) from emp;
+2) ceil():
+> returns a value which is greater than or equal to given value.
+Syntax:
+---------------
+ceil(number)
+Ex:
+Sql> select ceil(9.0) from dual;------9
+Sql> select ceil(9.3) from dual;-------10
+3) floor():
+Syntax:
+floor(number)
+Ex:
+Sql> select floor(9.0) from dual;------9
+Sql> select floor(9.8) from dual;------9
+4) mod():
+Returns remainder value.
+Syntax:
+mod(m,n)
+Ex:
+Sql> select mod(10,2) from dual;-------0
+5) power():
+The power of given expression
+Syntax:
+power(m,n)
+Ex:
+Sql> select power(2,3) from dual;----------8
+Round():
+> nearest value given expression.
+Syntax:
+round(number,[decimal places])
+Ex:
+Sql> select round(5.50) from dual;------6
+Sql> select round(32.456,2) from dual;------32.46
+Trunc:
+--------------
+> returns a value which will specified number of decimal places.
+Syntax:
+trunc(number,decimal places)
+Ex:
+Sql> select trunc(5.50) from dual;---------5
+Sql> select trunc(32.456,2) from dual;----32.45
+==========================================================================
+String functions:
+Length():
+------------------
+> length of given string.
+Syntax:
+length(string)
+Ex:
+Sql> select length('hello') from dual;------------------------5
+Sql> select length('good morning') from dual;--------12
+Sql> select ename,length(ename) from emp;
+Sql> select * from emp where length(ename)=4;
+Lower():
+----------------
+To convert upper case char's into lower case char's.
+Syntax:
+lower(string)
+Ex:
+Sql> select lower('hello') from dual;
+Sql> update emp set ename=lower(ename) where job='clerk';
+Upper():
+---------------
+Syntax:
+upper(string)
+Ex:
+Sql> select lower('hello') from dual;
+Initcap():
+------------------
+To convert first char. Is capital.
+Syntax:
+initcap(string)
+Ex:
+Sql> select initcap('hello') from dual;
+Sql> select initcap('good morning') from dual;
+Ltirm():
+---------------
+To remove unwanted spaces (or) unwanted characters from left side 
+Of given string.
+Syntax:
+ltrim(string1[,string2])
+Ex:
+Sql> select ltrim(' sai') from dual;
+Sql> select ltrim('xxxxxxsai','x') from dual;
+Sql> select ltrim('123sai','123') from dual;
+Rtrim():
+To remove unwanted spaces (or) unwanted characters from right side 
+Of given string.
+Syntax:
+rtrim(string1[,string2])
+Ex:
+Sql> select rtrim('saixxxxxxx','x') from dual;
+Trim():
+To remove unwanted spaces (or) unwanted characters from both sides 
+Of given string.
+Syntax:
+----------------
+trim('trimming char' from 'string')
+Ex:
+Sql> select trim('x' from 'xxxxxxsaixxxx') from dual;
+Lpad():
+To fill a string with specific char. On left side of given
+String.
+Syntax:
+---------------
+lpad(string1,length,string2)
+Ex:
+Sql> select lpad('hello',10,'@') from dual;
+@@@@@hello
+Rpad():
+-------------
+To fill a string with specific char. On right side of given
+String.
+Syntax:
+---------------
+rpad(string1,length,string2)
+Ex:
+Sql> select rpad('hello',10,'@') from dual;
+Hello@@@@@
+Concat():
+-----------------
+Adding two string expressions.
+Syntax:
+--------------
+concat(string1,string2)
+Ex:
+Sql> select concat('good','bye') from dual;
+Replace():
+-------------------
+To replace one string with another string.
+Syntax:
+---------------
+replace(string1,string2,string3)
+Ex:
+Sql> select replace('hello','ell','xyz') from dual;
+Hxyzo
+Sql> select replace('hello','l','abc') from dual;
+Heabcabco
+Translate():
+------------------------
+To translate a single char with another single char.
+Syntax:
+--------------
+translate(string1,string2,string3)
+Ex:
+Sql> select translate('hello','elo','xyz') from dual;
+Hxyyz
+sol: e = x , l=y , o=z
+hello => hxyyz
+Ex:
+Sql> select ename,sal,translate(sal,'0123456789','$b@gh*v#t%') salary from emp;
+Ename sal salary
+---------- --------------- -------------------------
+Smith 800 t$$
+sol: 0=$,1=b,2=@,3=g,4=h,5=*,6=v,7=#,8=t,9=%.
+Substr():
+-----------------
+It returns req.substring from given string expression.
+Syntax:
+---------------
+substr(string1,<starting position of char.>,<length of char's>)
+Ex:
+Sql> select substr('hello',2,3) from dual;
+Ell
+Sql> select substr('welcome',4,2) from dual;
+Co
+Sql> select substr('welcome',-6,3) from dual;
+Elc
+Instr():
+--------------
+Returns occurence position of a char. In the given string.
+Syntax:
+---------------
+Instr(string1,string2,<starting position of char.>,<occurence position of char.>)
+Ex:
+Sql> select instr('hello welcome','o') from dual;---------> 5 
+Sql> select instr('hello welcome','z') from dual;-----> 0
+Sql> select instr('hello welcome','o',1,2) from dual;-----11
+Sql> select instr('hello welcome','e',5,2) from dual;-------13
+Sql> select instr('hello welcome','e',1,4) from dual;--------8
+Note:
+----------
+Position of char's always fixed either count from left to right
+(or) right to left.
+sol: hello welcome
+ 12345 6 78910111213
+Ex:
+Sql> select instr('hello welcome','e',-1,3) from dual;--------2
+Sql> select instr('hello welcome','l',-4,3) from dual;-------3
+Sql> select instr('hello welcome','l',-6,3) from dual;----------0
+==========================================================================
+Date functions:
+------------------------------
+1) sysdate:
+---------------------
+> current date information of the system.
+Ex:
+Sql> select sysdate from dual;
+Sql> select sysdate+10 from dual;
+Sql> select sysdate-10 from dual;
+Add_months():
+--------------------------
+> adding no.of months to the date.
+Syntax:
+---------------
+add_months(date,<no.of months>)
+Ex:
+Sql> select add_months(sysdate,3) from dual;
+Sql> select add_months(sysdate,-3) from dual;
+Last_day():
+---------------------
+> returns the last day of the month.
+Syntax:
+--------------
+last_day(date)
+Ex:
+Sql> select last_day(sysdate) from dual;
+Next_day():
+--------------------
+> returns the next specified day from the given date.
+Syntax:
+---------------
+next_day(date,'<day name>')
+Ex:
+Sql> select next_day(sysdate,'sunday') from dual;
+Months_between():
+------------------------------------
+> returns no.of months between two date expressions.
+Syntax:
+---------------
+months_between(date1,date2)
+Ex:
+Sql> select months_between('05-jan-81','05-jan-80') from dual;----- 12
+Sql> select months_between('05-jan-80','05-jan-81') from dual;----- -12
+Note: here, date1 is always greater than date2 otherwise
+ oracle returns nagative value.
+=======================================================================
+Conversion functions:
+-------------------------------------------
+1. To_char()
+2. To_date()
+To_char():
+-------------------
+> date type to char type to display date in different fromat.
+Syntax:
+to_char(date,[<format>])
+Year formats:
+---------------------------
+yyyy - 2020
+yy - 20
+year - twenty twenty
+cc - centuary 21
+ad / bc- ad yaer / bc year
+Ex:
+Sql> select to_char(sysdate,'yyyy yy year cc ad') from dual;
+To_char(sysdate,'yyyyyyyearccad')
+----------------------------------------------------------
+2020 20 twenty twenty 21 ad
+Q: to display employee who are joined in year 1982
+By using to_char() function ?
+Sol:
+Sql> select * from emp where to_char(hiredate,'yyyy')=1982;
+Q: to display employee who are joined in year 1980,1982,1987
+By using to_char() function ?
+Sol:
+Sql> select * from emp where to_char(hiredate,'yyyy') in(1980,1982,1987);
+Month format:
+----------------------------
+Mm - month number
+Mon - first three char from month spelling
+Month - full name of month 
+Ex:
+Sql> select to_char(sysdate,'mm mon month') from dual;
+To_char(sysdate,
+----------------
+08 aug august
+Sql> select to_char(sysdate,'mm mon month') from dual;
+To_char(sysdate,
+----------------
+08 aug august
+Q: to display employee who are joined in feb,may,dec months
+By using to_char() ?
+Sol:
+Sql> select * from emp where to_char(hiredate,'mm') in(02,05,12);
+Q: to display employee who are joined in feb 1981 
+By using to_char() ?
+Sol:
+Sql> select * from emp where to_char(hiredate,'mmyyyy')='021981';
+Day formats:
+-------------------------
+Ddd - day of the year.
+Dd - day of the month.
+D - day of the week
+sun - 1
+mon - 2
+tue - 3
+wen - 4
+thu - 5
+fri - 6
+sat - 7
+Day - full name of the day 
+Dy - first three char's of day spelling
+Ex:sql> select to_char(sysdate,'ddd dd d day dy') from dual;
+To_char(sysdate,'ddddd
+----------------------------------------------
+220 07 6 friday fri
+Q: to display employee who are joined on "friday" by using
+To_char() ?
+Sol:
+Sql> select * from emp where to_char(hiredate,'day')='friday';
+Q: to display employee on which day employees are joined ?
+Sol:
+Sql> select ename||' '||'joined on'||' '||to_char(hiredate,'day') from emp;
+Note:
+----------
+In oracle whenever we using to_char() and also within to_char() when we 
+Use day / month format then oracle server internally allocate some extra memory for day/month format 
+of data.
+to overcome the above problem that is to remove extra memory which was allocate by oracle 
+server then we use a pre-define specifier is 
+Called "fm" (fill mode).
+Ex:
+Select * from emp where to_char(hiredate,'fmday')='friday';
+Quater format:
+----------------------------
+Q - one digit quater of the year
+1 - jan - mar
+2 - apr - jun
+3 - jul - sep
+4 - oct - dec
+Ex:
+Sql> select to_char(sysdate,'q') from dual;
+T
+---
+3
+Q : who are joined in 2nd quater of 1981 ?
+Sol:
+Sql> select * from emp where to_char(hiredate,'yyyy')='1981' and 
+to_char(hiredate,'q')=2;
+Week format:
+--------------------------
+Ww - week of the year
+W - week of month
+Ex:
+Sql> select to_char(sysdate,'ww w') from dual;
+To_c
+---------
+32 2
+Time format:
+-------------------------
+Hh - hour part
+Hh24 - 24 hrs fromat
+Mi - minute part
+Ss - seconds part
+Am / pm - am tme (or) pm time
+Ex:
+Sql> select to_char(sysdate,'hh:mi:ss am') from dual;
+To_char(sys
+------------------------
+12:04:21 pm
+To_date():
+------------------
+To convert char type to oracle date format type.
+Syntax:
+to_date(string[,fromat])
+Ex:
+Sql> select to_date('08/august/2020') from dual;
+To_date('
+---------
+08-aug-20
+Sql> select to_date('08-aug-2020')+10 from dual;
+To_date('
+---------
+18-aug-20
+Multiple row functions:
+-----------------------------------------------
+These functions are returns either group of values 
+(or) a single value.
+Sum():
+-----------
+> it returns sum of a specific column values.
+Ex:
+Sql> select sum(sal) from emp;
+Sql> select sum(sal) from emp where job='clerk';
+Avg():
+----------
+> it returns average of a specific column values.
+Ex:
+Sql> select avg(sal) from emp;
+Sql> select avg(sal) from emp where deptno=10;
+Min():
+----------
+> it returns min.value from group of values.
+Ex:
+Sql> select min(hiredate) from emp;
+Sql> select min(hiredate) from emp where job='manager';
+Sql> select min(sal) from emp;
+Max():
+-----------
+> it returns max.value from group of values.
+Ex:
+Sql> select max(sal) from emp;
+Count():
+----------------
+> it returns no.of rows in a tbale / no.of values in a column
+> three types,
+i) count(*)
+ii) count(<column name>)
+iii) count(distinct <column name>)
+Ex:
+test
+--------
+Sno name
+--- -----
+101 a
+102 b
+103
+104 c
+105 a
+106 c
+Count(*):
+----------------
+> counting all rows (duplicates & nulls) in a table.
+Ex:
+Sql> select count(*) from test;
+ count(*)
+ 6
+Count(<column name>):
+> counting all values including duplicate values but not null values 
+From a column.
+Ex:
+Sql> select count(name) from test;
+Count(name)
+ 5
+Count(distinct <column name>):
+> counting unique values from a column.here "distinct" keyword
+Is eliminating duplicate values.
+Ex:
+Sql> select count(distinct name) from test;
+Count(distinctname)
+---------------------------------------
+ 3
