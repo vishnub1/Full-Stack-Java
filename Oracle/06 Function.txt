@@ -3,10 +3,12 @@ Functions:
 > oracle supports two types functions.those are
 1) pre-define / built in functions (use in sql & pl/sql)
 2) user define functions ( use in pl/sql)
+
 1) pre-define functions:
 > these are again classified into two categories.
 a) single row functions (scalar functions)
 b) multiple row functions(grouping functions)
+
 Single row functions:
 > these functions are returns a single row (or) a single value.
 > numeric functions
