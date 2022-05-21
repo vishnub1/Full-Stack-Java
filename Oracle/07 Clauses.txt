@@ -9,6 +9,7 @@ Clauses in Oracle:
 
 
 1.where
+=======
 
 SQL> SELECT * FROM EMP;
 
@@ -28,6 +29,7 @@ SQL> SELECT * FROM EMP;
       7844 turner     salesman        7698 08-SEP-81       1500          0         30
       7902 ford       analyst         7566 03-DEC-81       3000                    20
       7934 miller     clerk           7782 23-JAN-82       1300                    10
+=========================================================================================================      
       
       
       
@@ -200,8 +202,13 @@ ford       analyst         3000
 king       president       5000
 
 14 rows selected.
+======================================================================================================== 
+
+
+
 
 3.group by
+===========
 SQL> SELECT JOB,COUNT(*) NO_OF_EMP FROM EMP GROUP BY JOB;
 
 JOB        NO_OF_EMP
@@ -261,12 +268,13 @@ clerk     966.666667        800       1300
 manager   2758.33333       2450       2975
 president       5000       5000       5000
 salesman        1350       1250       1500
-
+======================================================================================================== 
 
 
 
 
 4.having
+=========
 SQL> SELECT DEPTNO,SUM(SAL) FROM EMP
   2  GROUP BY
   3  DEPTNO
@@ -287,10 +295,12 @@ SQL> SELECT DEPTNO,COUNT(*) FROM EMP
 ---------- ----------
         30          6
         
+ ========================================================================================================        
         
-        
-        
-5.roll up
+   
+   
+5.roll up:
+========
 SQL> SELECT DEPTNO,COUNT(*) FROM EMP
   2  WHERE SAL>1000
   3  GROUP BY DEPTNO
@@ -327,9 +337,12 @@ SQL> SELECT DEPTNO,COUNT(*) FROM EMP
                    14
 
 17 rows selected.
+======================================================================================================== 
+
 
 
 6.cube
+======
 SQL> SELECT DEPTNO,JOB,COUNT(*),GROUPING_ID(DEPTNO,JOB) FROM EMP
   2  GROUP BY
   3  CUBE(DEPTNO,JOB)
