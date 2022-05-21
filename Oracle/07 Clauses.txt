@@ -202,6 +202,155 @@ king       president       5000
 14 rows selected.
 
 3.group by
+SQL> SELECT JOB,COUNT(*) NO_OF_EMP FROM EMP GROUP BY JOB;
+
+JOB        NO_OF_EMP
+--------- ----------
+clerk              3
+salesman           5
+manager            3
+analyst            2
+president          1
+
+SQL> SELECT DEPTNO,SUM(SAL),TOTAL_SAL FROM EMP GROUP BY DEPTNO ORDER BY DEPTNO;
+SELECT DEPTNO,SUM(SAL),TOTAL_SAL FROM EMP GROUP BY DEPTNO ORDER BY DEPTNO
+                       *
+ERROR at line 1:
+ORA-00904: "TOTAL_SAL": invalid identifier
+
+
+SQL> SELECT DEPTNO,SUM(SAL) TOTAL_SAL FROM EMP GROUP BY DEPTNO ORDER BY DEPTNO;
+
+    DEPTNO  TOTAL_SAL
+---------- ----------
+        10       8750
+        20      10575
+        30       9600
+
+SQL> SELECT DEPTNO,SUM(SAL) TOTAL_SAL FROM EMP WHERE DEPT IN(10,20) GROUP BY DEPTNO;
+SELECT DEPTNO,SUM(SAL) TOTAL_SAL FROM EMP WHERE DEPT IN(10,20) GROUP BY DEPTNO
+                                                *
+ERROR at line 1:
+ORA-00904: "DEPT": invalid identifier
+
+
+SQL> SELECT DEPTNO,SUM(SAL) TOTAL_SAL FROM EMP WHERE DEPTNO IN(10,20) GROUP BY DEPTNO;
+
+    DEPTNO  TOTAL_SAL
+---------- ----------
+        20      10575
+        10       8750
+
+SQL> SELECT JOB AVG(SAL) AVGSAL,MIN(SAL) MINSAL,MAX(SAL) MAXSAL FROM EMP
+  2  GROUP BY JOB
+  3  ORDER BY JOB;
+SELECT JOB AVG(SAL) AVGSAL,MIN(SAL) MINSAL,MAX(SAL) MAXSAL FROM EMP
+              *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> SELECT JOB, AVG(SAL) AVGSAL,MIN(SAL) MINSAL,MAX(SAL) MAXSAL FROM EMP
+  2  GROUP BY JOB
+  3  ORDER BY JOB;
+
+JOB           AVGSAL     MINSAL     MAXSAL
+--------- ---------- ---------- ----------
+analyst         3000       3000       3000
+clerk     966.666667        800       1300
+manager   2758.33333       2450       2975
+president       5000       5000       5000
+salesman        1350       1250       1500
+
+
+
+
+
 4.having
+SQL> SELECT DEPTNO,SUM(SAL) FROM EMP
+  2  GROUP BY
+  3  DEPTNO
+  4  HAVING SUM(SAL)>9000;
+
+    DEPTNO   SUM(SAL)
+---------- ----------
+        20      10575
+        30       9600
+
+SQL> SELECT DEPTNO,COUNT(*) FROM EMP
+  2  WHERE SAL>1000
+  3  GROUP BY DEPTNO
+  4  HAVING COUNT(*)>3
+  5  ORDER BY DEPTNO;
+
+    DEPTNO   COUNT(*)
+---------- ----------
+        30          6
+        
+        
+        
+        
 5.roll up
+SQL> SELECT DEPTNO,COUNT(*) FROM EMP
+  2  WHERE SAL>1000
+  3  GROUP BY DEPTNO
+  4  HAVING COUNT(*)>3
+  5  ORDER BY DEPTNO;
+
+    DEPTNO   COUNT(*)
+---------- ----------
+        30          6
+
+SQL> SELECT DEPTNO,COUNT(*) FROM EMP
+  2  GROUP BY
+  3  CUBE(DEPTNO,JOB)
+  4  ORDER BY DEPTNO;
+
+    DEPTNO   COUNT(*)
+---------- ----------
+        10          1
+        10          1
+        10          1
+        10          3
+        20          2
+        20          2
+        20          1
+        20          5
+        30          1
+        30          5
+        30          6
+                    2
+                    3
+                    3
+                    1
+                    5
+                   14
+
+17 rows selected.
+
+
 6.cube
+SQL> SELECT DEPTNO,JOB,COUNT(*),GROUPING_ID(DEPTNO,JOB) FROM EMP
+  2  GROUP BY
+  3  CUBE(DEPTNO,JOB)
+  4  ORDER BY DEPTNO;
+
+    DEPTNO JOB         COUNT(*) GROUPING_ID(DEPTNO,JOB)
+---------- --------- ---------- -----------------------
+        10 clerk              1                       0
+        10 manager            1                       0
+        10 president          1                       0
+        10                    3                       1
+        20 analyst            2                       0
+        20 clerk              2                       0
+        20 manager            1                       0
+        20                    5                       1
+        30 manager            1                       0
+        30 salesman           5                       0
+        30                    6                       1
+           analyst            2                       2
+           clerk              3                       2
+           manager            3                       2
+           president          1                       2
+           salesman           5                       2
+                             14                       3
