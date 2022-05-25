@@ -1,0 +1,639 @@
+
+SQL> SELECT * FROM STUDENT;
+
+      STID SNAME             CID
+---------- ---------- ----------
+      1021 SAI                10
+      1022 ADAM               20
+      1023 PK                 30
+      1024 BALAJI             40
+
+SQL> SELECT * FROM COURSE;
+
+       CID CNAME            CFEE
+---------- ---------- ----------
+        10 C                2000
+        20 C++              2500
+        30 JAVA             3000
+        40 PYTHON           1000
+
+SQL> SELECT * FROM STUDENT,COURSE WHERE CID=CID;
+SELECT * FROM STUDENT,COURSE WHERE CID=CID
+                                       *
+ERROR at line 1:
+ORA-00918: column ambiguously defined
+
+
+SQL> SELECT * FROM STUDENT,COURSE WHERE CID = CID;
+SELECT * FROM STUDENT,COURSE WHERE CID = CID
+                                         *
+ERROR at line 1:
+ORA-00918: column ambiguously defined
+
+
+SQL> SELECT * FROM STUDENT,COURSE WHERE STUDENT.CID = COURSE.CID;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SAI                10         10 C                2000
+      1022 ADAM               20         20 C++              2500
+      1023 PK                 30         30 JAVA             3000
+      1024 BALAJI             40         40 PYTHON           1000
+
+SQL> SELECT * FROM STUDENT,COURSE;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SAI                10         10 C                2000
+      1021 SAI                10         20 C++              2500
+      1021 SAI                10         30 JAVA             3000
+      1021 SAI                10         40 PYTHON           1000
+      1022 ADAM               20         10 C                2000
+      1022 ADAM               20         20 C++              2500
+      1022 ADAM               20         30 JAVA             3000
+      1022 ADAM               20         40 PYTHON           1000
+      1023 PK                 30         10 C                2000
+      1023 PK                 30         20 C++              2500
+      1023 PK                 30         30 JAVA             3000
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1023 PK                 30         40 PYTHON           1000
+      1024 BALAJI             40         10 C                2000
+      1024 BALAJI             40         20 C++              2500
+      1024 BALAJI             40         30 JAVA             3000
+      1024 BALAJI             40         40 PYTHON           1000
+
+16 rows selected.
+
+SQL> CREATE TABLE S11(CNO NUMBER(10),NAME VARCHAR(10));
+
+Table created.
+
+SQL> INSERT INTO S11 VALUES(12,VISHNU);
+INSERT INTO S11 VALUES(12,VISHNU)
+                          *
+ERROR at line 1:
+ORA-00984: column not allowed here
+
+
+SQL> INSERT INTO S11 VALUES(12,'VISHNU');
+
+1 row created.
+
+SQL> SELECT * FROM STUDENT,COURSE WHERE STUDENT.CID=S11.CNO;
+SELECT * FROM STUDENT,COURSE WHERE STUDENT.CID=S11.CNO
+                                               *
+ERROR at line 1:
+ORA-00904: "S11"."CNO": invalid identifier
+
+
+SQL> SELECT * FROM STUDENT,S11 WHERE STUDENT.CID=S11.CNO;
+
+no rows selected
+
+SQL> select * from student s,course c where s.cid =  c.cid and c.cid=20;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1022 ADAM               20         20 C++              2500
+
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7369 smith      clerk           7902 17-DEC-80        800
+        20
+
+      7369 smith      clerk           7902 17-DEC-80        800
+        20
+
+      7521 ward       salesman        7698 22-FEB-81       1250        500
+        30
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7521 ward       salesman        7698 22-FEB-81       1250        500
+        30
+
+      7566 jones      manager         7839 02-APR-81       2975
+        20
+
+      7654 martin     salesman        7698 28-SEP-81       1250       1400
+        30
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7698 blake      manager         7839 01-MAY-81       2850
+        30
+
+      7782 clark      manager         7839 09-JUN-81       2450
+        10
+
+      7788 scott      analyst         7566 09-DEC-82       3000
+        20
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7839 king       president            17-NOV-81       5000
+        10
+
+      7844 turner     salesman        7698 08-SEP-81       1500          0
+        30
+
+      7844 turner     salesman        7698 08-SEP-81       1500          0
+        30
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7902 ford       analyst         7566 03-DEC-81       3000
+        20
+
+      7934 miller     clerk           7782 23-JAN-82       1300
+        10
+
+
+14 rows selected.
+
+SQL> set lines 100;
+SQL> set pagesize 100;
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+      7521 ward       salesman        7698 22-FEB-81       1250        500         30
+      7521 ward       salesman        7698 22-FEB-81       1250        500         30
+      7566 jones      manager         7839 02-APR-81       2975                    20
+      7654 martin     salesman        7698 28-SEP-81       1250       1400         30
+      7698 blake      manager         7839 01-MAY-81       2850                    30
+      7782 clark      manager         7839 09-JUN-81       2450                    10
+      7788 scott      analyst         7566 09-DEC-82       3000                    20
+      7839 king       president            17-NOV-81       5000                    10
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7902 ford       analyst         7566 03-DEC-81       3000                    20
+      7934 miller     clerk           7782 23-JAN-82       1300                    10
+
+14 rows selected.
+
+SQL> select * from dept;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 accounting     new york
+        20 research       dallas
+        30 sales          chicago
+        40 operations     boston
+
+SQL> select * from emp e,dept d where e.deptno=d.deptno and loc='chicago';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO        DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ---------- ----------
+DNAME          LOC
+-------------- -------------
+      7521 ward       salesman        7698 22-FEB-81       1250        500         30            30
+sales          chicago
+
+      7521 ward       salesman        7698 22-FEB-81       1250        500         30            30
+sales          chicago
+
+      7654 martin     salesman        7698 28-SEP-81       1250       1400         30            30
+sales          chicago
+
+      7698 blake      manager         7839 01-MAY-81       2850                    30            30
+sales          chicago
+
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30            30
+sales          chicago
+
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30            30
+sales          chicago
+
+
+6 rows selected.
+
+SQL> select dname,sum(sal) from emp e,dept d where e.deptno = d.deptno group by dname;
+
+DNAME            SUM(SAL)
+-------------- ----------
+research            10575
+sales                9600
+accounting           8750
+
+SQL> select dname,sum(sal) from emp e,dept d where e.deptno = d.deptno;
+select dname,sum(sal) from emp e,dept d where e.deptno = d.deptno
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select dname,sum(sal)from emp e,dept d where e.deptno=d.deptno group by dname having sum(sal)>1000;
+
+DNAME            SUM(SAL)
+-------------- ----------
+research            10575
+sales                9600
+accounting           8750
+
+SQL> select dname,sum(sal)from emp e,dept d where e.deptno=d.deptno group by dname having sum(sal)>100000;
+
+no rows selected
+
+SQL> select dname,sum(sal)from emp e,dept d where e.deptno=d.deptno group by dname having sum(sal)>10000;
+
+DNAME            SUM(SAL)
+-------------- ----------
+research            10575
+
+SQL> select dname.count(*) from emp emp e.dept d where e.deptno = d.deptno group by rollup(dname);
+select dname.count(*) from emp emp e.dept d where e.deptno = d.deptno group by rollup(dname)
+                   *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> select dname,count(*) from emp emp e.dept d where e.deptno = d.deptno group by rollup(dname);
+select dname,count(*) from emp emp e.dept d where e.deptno = d.deptno group by rollup(dname)
+                                   *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select dname,count(*) from emp emp e,dept d where e.deptno = d.deptno group by rollup(dname);
+select dname,count(*) from emp emp e,dept d where e.deptno = d.deptno group by rollup(dname)
+                                   *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select dname,count(*) from emp e,dept d where e.deptno = d.deptno group by rollup(dname);
+
+DNAME            COUNT(*)
+-------------- ----------
+research                5
+sales                   6
+accounting              3
+                       14
+
+SQL> select d.deptno,dname,count(*) from emp e,dept d where e.deptno
+  2  group by
+  3  cube(d.deptno,dname);
+group by
+*
+ERROR at line 2:
+ORA-00920: invalid relational operator
+
+
+SQL> select d.deptno,dname,count(*) from emp e,dept d
+  2  where e.deptno=d.deptno
+  3  group by
+  4  cube(d.deptno,dname);
+
+    DEPTNO DNAME            COUNT(*)
+---------- -------------- ----------
+                                  14
+           sales                   6
+           research                5
+           accounting              3
+        10                         3
+        10 accounting              3
+        20                         5
+        20 research                5
+        30                         6
+        30 sales                   6
+
+10 rows selected.
+
+SQL> select d.deptno,dname,count(*) from emp e,dept d where e.deptno;
+select d.deptno,dname,count(*) from emp e,dept d where e.deptno
+                                                              *
+ERROR at line 1:
+ORA-00920: invalid relational operator
+
+
+SQL> select d.deptno,dname,count(*) from emp e,dept d where e.deptno;
+select d.deptno,dname,count(*) from emp e,dept d where e.deptno
+                                                              *
+ERROR at line 1:
+ORA-00920: invalid relational operator
+
+
+SQL>  select d.deptno,dname,count(*) from emp e,dept d
+  2  where e.deptno=d.deptno;
+ select d.deptno,dname,count(*) from emp e,dept d
+        *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select * from student Inner Join course on student.cid=course.cid;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SAI                10         10 C                2000
+      1022 ADAM               20         20 C++              2500
+      1023 PK                 30         30 JAVA             3000
+      1024 BALAJI             40         40 PYTHON           1000
+
+SQL> select * from emp e inner join dept d on e.deptno=d.deptno
+  2  Where loc='chicago';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO        DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ---------- ----------
+DNAME          LOC
+-------------- -------------
+      7521 ward       salesman        7698 22-FEB-81       1250        500         30            30
+sales          chicago
+
+      7521 ward       salesman        7698 22-FEB-81       1250        500         30            30
+sales          chicago
+
+      7654 martin     salesman        7698 28-SEP-81       1250       1400         30            30
+sales          chicago
+
+      7698 blake      manager         7839 01-MAY-81       2850                    30            30
+sales          chicago
+
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30            30
+sales          chicago
+
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30            30
+sales          chicago
+
+
+6 rows selected.
+
+SQL> select * from stdent s left outer join course c on s.cid=c.cid;
+select * from stdent s left outer join course c on s.cid=c.cid
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select * from student s left outer join course c on s.cid=c.cid;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SAI                10         10 C                2000
+      1022 ADAM               20         20 C++              2500
+      1023 PK                 30         30 JAVA             3000
+      1024 BALAJI             40         40 PYTHON           1000
+
+SQL> insert into course values(50,'PHysice',5000);
+
+1 row created.
+
+SQL> select * from student s left outer join course c on s.cid=c.cid;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SAI                10         10 C                2000
+      1022 ADAM               20         20 C++              2500
+      1023 PK                 30         30 JAVA             3000
+      1024 BALAJI             40         40 PYTHON           1000
+
+SQL> select * frmo students ,course c where s.cid=c.cid(+);
+select * frmo students ,course c where s.cid=c.cid(+)
+         *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select * from students ,course c where s.cid=c.cid(+);
+select * from students ,course c where s.cid=c.cid(+)
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select * from student s ,course c where s.cid=c.cid(+);
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SAI                10         10 C                2000
+      1022 ADAM               20         20 C++              2500
+      1023 PK                 30         30 JAVA             3000
+      1024 BALAJI             40         40 PYTHON           1000
+
+SQL> =============
+SP2-0734: unknown command beginning "==========..." - rest of line ignored.
+SQL> Right Outer JOin;
+SP2-0734: unknown command beginning "Right Oute..." - rest of line ignored.
+SQL> //
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SAI                10         10 C                2000
+      1022 ADAM               20         20 C++              2500
+      1023 PK                 30         30 JAVA             3000
+      1024 BALAJI             40         40 PYTHON           1000
+
+SQL> /
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SAI                10         10 C                2000
+      1022 ADAM               20         20 C++              2500
+      1023 PK                 30         30 JAVA             3000
+      1024 BALAJI             40         40 PYTHON           1000
+
+SQL> select * from student s,course c where s.cid(+)=c.cid;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SAI                10         10 C                2000
+      1022 ADAM               20         20 C++              2500
+      1023 PK                 30         30 JAVA             3000
+      1024 BALAJI             40         40 PYTHON           1000
+                                         50 PHysice          5000
+
+SQL> /
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SAI                10         10 C                2000
+      1022 ADAM               20         20 C++              2500
+      1023 PK                 30         30 JAVA             3000
+      1024 BALAJI             40         40 PYTHON           1000
+                                         50 PHysice          5000
+
+SQL> ---full outer join
+SQL>
+SQL>
+SQL> ---Ansi Format
+SQL>
+SQL> select * from student s, course c where s.cid(Select * from student s,course c where s.cid=c.cid(+))
+  2  Union
+  3  Select * from student s,course c where s.cid(+)=c.cid;
+select * from student s, course c where s.cid(Select * from student s,course c where s.cid=c.cid(+))
+                                              *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> Select * from student s,course c where s.cid=c.cid(+)
+  2  Union
+  3  Select * from student s,course c where s.cid(+)=c.cid;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SAI                10         10 C                2000
+      1022 ADAM               20         20 C++              2500
+      1023 PK                 30         30 JAVA             3000
+      1024 BALAJI             40         40 PYTHON           1000
+                                         50 PHysice          5000
+
+SQL>
+SQL>
+SQL> NON EQUI JOIN
+SP2-0734: unknown command beginning "NON EQUI J..." - rest of line ignored.
+SQL> ---
+SQL>
+SQL>
+SQL>
+SQL> select * from test t1,test t2 where t1.sno>t1.sno;
+select * from test t1,test t2 where t1.sno>t1.sno
+                                           *
+ERROR at line 1:
+ORA-00904: "T1"."SNO": invalid identifier
+
+
+SQL> select * from test t1,test t2 where t1.sno>t2.sno;
+select * from test t1,test t2 where t1.sno>t2.sno
+                                           *
+ERROR at line 1:
+ORA-00904: "T2"."SNO": invalid identifier
+
+
+SQL> select * from test t1,test t2 where t1.sno>t2.sno;
+select * from test t1,test t2 where t1.sno>t2.sno
+                                           *
+ERROR at line 1:
+ORA-00904: "T2"."SNO": invalid identifier
+
+
+SQL> ---CROSS JOIN:
+SQL>
+SQL> select * from student cross join course;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SAI                10         10 C                2000
+      1021 SAI                10         20 C++              2500
+      1021 SAI                10         30 JAVA             3000
+      1021 SAI                10         40 PYTHON           1000
+      1021 SAI                10         50 PHysice          5000
+      1022 ADAM               20         10 C                2000
+      1022 ADAM               20         20 C++              2500
+      1022 ADAM               20         30 JAVA             3000
+      1022 ADAM               20         40 PYTHON           1000
+      1022 ADAM               20         50 PHysice          5000
+      1023 PK                 30         10 C                2000
+      1023 PK                 30         20 C++              2500
+      1023 PK                 30         30 JAVA             3000
+      1023 PK                 30         40 PYTHON           1000
+      1023 PK                 30         50 PHysice          5000
+      1024 BALAJI             40         10 C                2000
+      1024 BALAJI             40         20 C++              2500
+      1024 BALAJI             40         30 JAVA             3000
+      1024 BALAJI             40         40 PYTHON           1000
+      1024 BALAJI             40         50 PHysice          5000
+
+20 rows selected.
+
+SQL> Select * from student,course;
+
+      STID SNAME             CID        CID CNAME            CFEE
+---------- ---------- ---------- ---------- ---------- ----------
+      1021 SAI                10         10 C                2000
+      1021 SAI                10         20 C++              2500
+      1021 SAI                10         30 JAVA             3000
+      1021 SAI                10         40 PYTHON           1000
+      1021 SAI                10         50 PHysice          5000
+      1022 ADAM               20         10 C                2000
+      1022 ADAM               20         20 C++              2500
+      1022 ADAM               20         30 JAVA             3000
+      1022 ADAM               20         40 PYTHON           1000
+      1022 ADAM               20         50 PHysice          5000
+      1023 PK                 30         10 C                2000
+      1023 PK                 30         20 C++              2500
+      1023 PK                 30         30 JAVA             3000
+      1023 PK                 30         40 PYTHON           1000
+      1023 PK                 30         50 PHysice          5000
+      1024 BALAJI             40         10 C                2000
+      1024 BALAJI             40         20 C++              2500
+      1024 BALAJI             40         30 JAVA             3000
+      1024 BALAJI             40         40 PYTHON           1000
+      1024 BALAJI             40         50 PHysice          5000
+
+20 rows selected.
+
+SQL>
+SQL>
+SQL> ----NATURAL JOIN
+SQL>
+SQL>
+SQL> select * from student s natural join c;
+select * from student s natural join c
+                                     *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select * from student s natural join course c;
+
+       CID       STID SNAME      CNAME            CFEE
+---------- ---------- ---------- ---------- ----------
+        10       1021 SAI        C                2000
+        20       1022 ADAM       C++              2500
+        30       1023 PK         JAVA             3000
+        40       1024 BALAJI     PYTHON           1000
+
+SQL>
+SQL>
+SQL> ----Self JOin
+SQL>
+SQL> select t1.ename,t1.loc from test t1,test t2 where t1.loc = t2.loc
+  2  and
+  3  t2.ename ='scott';
+t2.ename ='scott'
+*
+ERROR at line 3:
+ORA-00904: "T2"."ENAME": invalid identifier
+
+
+SQL> select t1.ename,t1.loc from test t1,test t2 where t1.loc = t2.loc
+  2
+SQL> select t1.ename,t1.loc from test t1,test t2 where t1.loc=t2.loc
+  2   and t2.ename='scott';
+ and t2.ename='scott'
+     *
+ERROR at line 2:
+ORA-00904: "T2"."ENAME": invalid identifier
+
+
+SQL> select e1.ename,e1.sal from emp e1,emp e2
+  2   where e1.sal=e2.sal and e2.ename='ford';
+
+ENAME             SAL
+---------- ----------
+scott            3000
+ford             3000
+
+SQL>
