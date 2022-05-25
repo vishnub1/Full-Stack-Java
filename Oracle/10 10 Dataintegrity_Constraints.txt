@@ -1,0 +1,493 @@
+ DATAINTEGRITY
+ ====================
+- to maintain accurate & consistency data in db tables.this dataintegrity 
+Again classified into two ways those are
+1. Declarative / pre -define dataintegrity(using constraints)
+2. Procedural / user - define dataintegrity(using triggers)
+Declarative / pre -define dataintegrity:
+======================================
+- this dataintegrity can be implemented with help of "constraints".these are again three types,
+- entity integrity
+- referencial integrity
+- domain integrity
+Entity integrity:
+================
+- it ensure that each row uniquly identify in a table.to implement 
+This mechanism we use primary key or unique constraint.
+Referencial integrity:
+======================
+- it ensure that to create relationship between tables.to implement this mechanism then we use 
+foreign key(referencial key).
+Domain integrity:
+=================
+- domain is nothing but column.it ensure that to check values with user define condition before 
+accepting values into a column.to perform this mechanism we use check, default, not null constraints.
+Constraints:
+=============
+Constraints are used to restricted unwanted(invalid) data into table all databases are supporting 
+the following constraint types are
+- unique
+- not null
+- check
+- primary key
+- foreign key(references key)
+- all databases are supporting the following two types of methods to define constraints. those are
+I) column level:
+===============
+- in this method we are defining constraints on individual columns.
+Syntax:
+--------------
+Create table <tn>(<column name1><datatype>[size] <constraint type>,......);
+Ii) table level:
+==============
+- in this method we are defining constraints after all columns are declared.(end of the table 
+definition)
+Syntax:
+--------------
+Create table <tn>(<column name1><datatype>[size],<column name2>
+<datatype>[size],......................................,<constraint type>(<column 
+name1>
+,<column name2>,.................));
+Unique:
+=======
+- to restricted duplicate values but accepting nulls into a column.
+I) column level:
+-------------------------------
+Ex:
+Sql> create table test1(sno int unique,name varchar2(10) unique);
+Testing:
+Sql> insert into test1 values(1,'a');---allowed
+Sql> insert into test1 values(1,'a');---not allowed
+Sql> insert into test1 values(null,null);----allowed
+Ii) table level:
+==============
+Ex:
+Sql> create table test2(sno int,name varchar2(10),unique(sno,name));
+Testing:
+Sql> insert into test2 values(1,'a');---allowed
+Sql> insert into test2 values(1,'a');---not allowed
+Sql> insert into test2 values(2,'a');---allowed
+Note : when we apply unique constraint on group of columns then we called as "composite unique" 
+constraint.in this mechanism individual columns are accepting duplicate values but duplicate 
+combination of columns data is not allowed.
+Not null:
+=========
+- to restricted nulls but accepting duplicate values into a column.
+- not null constraint not supports "table level".
+Column level:
+==============
+Ex:
+Sql> create table test3(stid int not null,sname varchar2(10) not null);
+Testing:
+Sql> insert into test3 values(101,'a');----allow
+Sql> insert into test3 values(101,'a');---allow
+Sql> insert into test3 values(null,null);----not allow
+Check:
+======
+- to check values with user defined condition before accepting values into a column.
+I) column level:
+===============
+Ex:
+Sql> create table test4(eid int,sal number(10) check(sal>=10000));
+Testing:
+Sql> insert into test4 values(1021,9500);---not allow
+Sql> insert into test4 values(1021,10000);---allow
+Ii) table level:
+==============
+Ex:
+Sql> create table test5(ename varchar2(10),sal number(10),
+Check(ename=lower(ename) and sal>8000));
+Testing:
+Sql> insert into test5 values('sai',7500);---not allow
+Sql> insert into test5 values('sai',9500);---allow
+Primary key:
+============
+- to restricted duplicates & nulls into a column.
+- a table should have only "one primary key".
+I) column level:
+===============
+Ex:
+Sql> create table test6(pcode int primary key,pname varchar2(10) 
+Primary key);
+ 
+Error at line 1:
+Ora-02260: table can have only one primary key.
+Sol:
+Sql> create table test6(pcode int primary key,pname varchar2(10));
+Testing:
+Sql> insert into test6 values(10021,'c');-----allow
+Sql> insert into test6 values(10021,'c++');----not allow
+Sql> insert into test6 values(null,'c++');----not allow
+Ii) table level:
+==============
+Ex:
+Sql> create table test7(bcode int,bname varchar2(10),
+Loc varchar2(10),primary key(bcode,bname));
+Testing:
+Sql> insert into test7 values(1021,'sbi','srnagar');---allow
+Sql> insert into test7 values(1021,'sbi','madhapur');---not allow
+Sql> insert into test7 values(1022,'sbi','madhapur');---allow
+Sql> insert into test7 values(1021,'icici','srnagar');----allow
+Note : when we apply primary key constraint on group of columns then we called as "composite primary 
+key" constraint.in this mechanism individual columns are accepting duplicate values but duplicate 
+combination of columns data is not allowed.
+Foreign key(references key):
+=============================
+- foreign key is used to establish relationship between tables.
+Basic things:
+=============
+1. We have a common column name(optional) but recommended.
+2. Common column datatype must match.
+3. One table foreign key must belongs to another table primary key.
+ and here primary key & foreign key column must be common column.
+4. Primary key table is called as "parent table" and foreign key table is called as "chid table"(i.e parent 
+& child relationship).
+5. Foreign key column values should be match with primary key column
+ values only.
+6. Generally primary key is not allowed duplicate and null values where as foreign key is allowed 
+duplicate & null values.
+I) column level:
+===============
+Syntax:
+--------------
+<common column name of child> <dt>[size] references 
+<parent table name>(<common column name of parent>)
+Ex:
+Step1:
+Sql> create table dept1(deptno int primary key,dname varchar2(10));
+Step2:
+Sql> insert into dept1 values(10,'oracle');
+Sql> insert into dept1 values(20,'java');
+Step3:
+Sql> create table emp1(eid int primary key,ename varchar2(10),
+ deptno int references dept1(deptno));
+Step4:
+Sql>insert into emp1 values(1021,'sai',10);
+Sql>insert into emp1 values(1022,'jones',10);
+Sql>insert into emp1 values(1023,'miller',20);
+- once we establish relationship between tables there are two rules are come into picture.those 
+are 
+1) insertion rule:
+=================
+- we cannot insert values into foreign key(references key) column those values are not existing 
+under primary key column of parent table.
+Ex:
+Sql> insert into emp1 values(1026,'scott',30);
+Error at line 1:
+Ora-02291: integrity constraint (scott.sys_c005468) violated - parent key not found.
+2) deletion rule:
+=================
+- when we try to delete a record from parent table and those associated records are available in 
+child table then oracle returns
+An error is,
+Ex:
+Sql> delete from dept1 where deptno=20;
+Error at line 1:
+Ora-02292: integrity constraint (scott.sys_c005468) violated - child record found.
+Note: 
+=====
+If we want to delete a record from parent table when they have 
+Corresponding child records in child table then we provide some set of rules to perform delete 
+operations on parent table.those rules are called as "cascade rules".
+i) on delete cascade 
+ii) on delete set null
+I) on delete cascade :
+=====================
+- whenever we are deleting a record from parent table then that associated child records are 
+deleted from child table automatically.
+Ex:
+Step1:
+Sql> create table dept2(deptno int primary key,dname varchar2(10));
+Step2:
+Sql> insert into dept2 values(10,'oracle');
+Sql> insert into dept2 values(20,'java');
+Step3:
+Sql> create table emp2(eid int primary key,ename varchar2(10),
+ deptno int references dept2(deptno) on delete cascade);
+Step4:
+Sql>insert into emp2 values(1021,'sai',10);
+Sql>insert into emp2 values(1022,'jones',10);
+Sql>insert into emp2 values(1023,'miller',20);
+Testing:
+Sql> delete from dept2 where deptno=20;----allowed
+Ii) on delete set null:
+=====================
+whenever we are deleting a record from parent table then that associated child records are set to 
+null in child table automatically.
+Ex:
+Step1:
+Sql> create table dept3(deptno int primary key,dname varchar2(10));
+Step2:
+Sql> insert into dept3 values(10,'oracle');
+Sql> insert into dept3 values(20,'java');
+Step3:
+Sql> create table emp3(eid int primary key,ename varchar2(10),
+ deptno int references dept3(deptno) on delete set null);
+Step4:
+Sql>insert into emp3 values(1021,'sai',10);
+Sql>insert into emp3 values(1022,'jones',10);
+Sql>insert into emp3 values(1023,'miller',20);
+Testing:
+Sql> delete from dept3 where deptno=10;----allowed
+Syntax for table level:
+========================
+Create table 
+<tn>(<col1><dt>[size],<col2><dt>[size],.............................,
+Foreign key(<col1>,<col2>,........) References <parent table 
+name>(<col1>,<col2>,...................);
+How to create a user define constraint key name to constraints:
+Pre-define constraint name:
+===============================
+- whenever we are applying constraint on a particular column then db server(system) internally 
+generate an unique id number (or) an unique constraint key name automatically for identifying a 
+constrant.
+Ex:
+Sql> create table test8(sno int primary key,name varchar2(10));
+Testing:
+---------------
+Sql> insert into test8 values(1,'a');---allowed
+Sql> insert into test8 values(1,'b');---not allowed
+Error:
+Ora-00001: unique constraint (scott.sys_c005475) violated
+User define constraint name:
+================================
+- in place of pre define constraint name we can also create a user defined constraint key name (or) 
+constraint id for identifying a constraint.
+Syntax:
+--------------
+<column name> <dt>[size] constraint <user defined constraint name> <constraint type>
+Ex:
+Sql> create table test10(sno int constraint pk_sno primary key,name varchar2(10) 
+constraint uq_name unique);
+Testing:
+Sql> insert into test10 values(1,'a');
+Sql> insert into test10 values(1,'b');
+Error at line 1:
+Ora-00001: unique constraint (scott.pk_sno) violated
+Sql> insert into test10 values(2,'a');
+Error at line 1:
+Ora-00001: unique constraint (scott.uq_name) violated
+Data dictionaries (or) read only tables:
+=======================================
+- whenever we are installing oracle s/w internally oracle server is creating some pre-define tables 
+are called as "data dictionaries".these 
+Data dictionaries are used to store the information about db objects such as 
+tables,indexes,views,synonyms,..............etc.
+- these data dictionaries are supporting "select" and "desc" commands only.so that data 
+dictionaries are also called as "read only tables" in oracle db.
+- if we want to view all data dictionaries in oracle db then we follow the following syntax is,
+Syntax:
+--------------
+Sql> select * from dict;
+Note1:
+======
+if we want to view all constraints infromation of a particular table then we use "user_constraints" 
+data dictionary.
+Ex:
+Sql> desc user_constraints;
+Sql> select constraint_name,constraint_type from user_constraints
+ where table_name='test10';
+Constraint_name constraint_type
+---------------------------------- -------------------------------
+Pk_sno p
+Uq_name u
+Note2:
+======
+- if we want to view constraint name along with column name of a particular table then we use " 
+user_cons_columns " datadictionary.
+Ex:
+Sql> desc user_cons_columns;
+Sql> select constraint_name,column_name from user_cons_columns
+ where table_name='test10';
+Constraint_name column_name
+---------------------------------- ----------------------------
+Uq_name name
+Pk_sno sno
+Note3:
+======
+to view a logical condition of check constraint then we need to call "search_condition" column 
+from "user_constraints" data dictionary.
+Ex:
+Sql> create table test11(sno int,sal number(10) check(sal>5000));
+Ex:
+Sql> desc user_constraints;
+Sql> select search_condition from user_constraints
+ where table_name='test11';
+Search_condition
+------------------------------------
+Sal>5000
+Note4:
+======
+to view all columns information of a particular table then we use "user_tab_columns" 
+datadictionary.
+Ex:
+Sql> desc user_tab_columns;
+Sql> select column_name from user_tab_columns
+ where table_name='emp';
+How to find no.of rows in a table:
+=================================
+Sql> select count(*) from emp;
+Count(*)
+----------------
+ 14
+How to find no.of columns in a table:
+====================================
+Sql> select count(*) from user_tab_columns where table_name='emp';
+ count(*)
+------------------
+ 8
+How to add constraints to an existing table:
+============================================
+Syntax:
+=======
+Alter table <tn> add constraint <constraint key name> <constraint type>
+(<column name>);
+Ex:
+Sql> create table test12(eid int,ename varchar2(10),sal number(10));
+I) adding primary key:
+=====================
+Sql> alter table test12 add constraint pk_eid primary key(eid);
+Ii) adding unique,check constraint:
+===================================
+Sql> alter table test12 add constraint uq_ename unique(ename);
+Sql> alter table test12 add constraint chk_sal check(sal=10000);
+Iii) adding "not null" constraint:
+================================
+Syntax:
+--------------
+Alter table <tn> modify <column name> constraint <constraint key name>
+Not null;
+Ex:
+Sql> alter table test12 modify ename constraint nn_ename not null;
+Iv) adding foreign key constraint:
+==================================
+Syntax:
+--------------
+Alter table <tn> add constraint <constraint key name>
+Foreign key(<common column of child table>) references
+<parent table>(<common column of parent table>) on delete cascade /
+On delete set null;
+Ex:
+Sql> create table test13(dname varchar2(10),eid int);
+Table created.
+Ex:
+Sql> alter table test13 add constraint fk_eid foreign key(eid)
+ references test12(eid) on delete cascade;
+How to drop constraint from an existing table:
+===============================================
+Syntax:
+---------------
+Alter table <tn> drop constraint <constraint key name>;
+I) dropping primary key:
+=======================
+Method1:
+-----------------
+Sql> alter table test13 drop constraint fk_eid;-------first
+Sql> alter table test12 drop constraint pk_eid;--------later
+Method2:
+-----------------
+- when we drop primary key along with foreign key constraint from parent and child tbales then we use 
+"cascade" statement.
+Ex:
+Sql> alter table test12 drop constraint pk_eid cascade;
+Ii) dropping unique,check,not null constrant:
+=============================================
+Sql> alter table test12 drop constraint uq_ename;
+Sql> alter table test12 drop constraint chk_sal;
+Sql> alter table test12 drop constraint nn_ename;
+How to rename constraint name:
+================================
+Syntax:
+--------------
+Alter table <tn> rename constraint < old constraint name> to <new constraint name>;
+Ex:
+Sql> create table test14(sno int primary key);
+Sql> select constraint_name from user_cons_columns 
+ where table_name='test14';
+Constraint_name
+------------------------------
+Sys_c005489
+Sql> alter table test14 rename constraint sys_c005489 to sno_pk;
+Sql> select constraint_name from user_cons_columns
+ where table_name='test14';
+Constraint_name
+------------------------------
+Sno_pk
+How disable / enable constraint:
+================================
+- by default constraints are enable mode.if we want to disable constraint temp. Then we use 
+"disable" keyword.it means that constraint is existing in db but not work till it make as "enable".
+- whenever we want to copy huge amount of data from one table to another table there we use 
+"disable" keyword.
+Syntax:
+--------------
+Alter table <tn> disable / enable constraint <constraint key name>;
+Ex:
+Sql> create table test15(ename varchar2(10),sal number(10) 
+ check(sal=5000));
+Sql> insert into test15 values('sai',5000);----allowed
+Sql> insert into test15 values('jones',3000);-----not allowed
+Error at line 1:
+Ora-02290: check constraint (scott.sys_c005492) violated
+Sql> alter table test15 disable constraint sys_c005492;
+Sql> insert into test15 values('jones',3000);----allowed
+Ex:
+Sql> alter table test15 enable constraint sys_c005492;
+Error at line 1:
+Ora-02293: cannot validate (scott.sys_c005492) - check constraint violated
+- to overcome the above problem then we use "novalidate" keyword at the time of enable 
+constraint.once we use "novalidate" keywordthen constraint is enable with "novalidate" and oracle 
+server will not check existing data in table but checking new data while inserting time.
+Ex:
+Sql> alter table test15 enable novalidate constraint sys_c005492;
+Table altered.
+Testing:
+Sql> insert into test15 values('scott',6000);---not allowed
+Error at line 1:
+Ora-02290: check constraint (scott.sys_c005492) violated
+Sql> insert into test15 values('scott',5000);------allowed
+Default constraint:
+===================
+- it a special type of constraint which is used to assign a user define default value to a column.
+Syntax:
+--------------
+<column name> <datatype>[size] default <value / expression>
+Ex:
+Sql> create table test17(sno int,sal number(10) default 5000);
+Table created.
+Testing:
+Sql> insert into test17 values(1,8500);
+Sql> insert into test17(sno)values(2);
+Output:
+--------------
+ sno sal
+--------------- ----------
+ 1 8500
+ 2 5000
+How to add default value to an existing table:
+==============================================
+Syntax:
+--------------
+Alter table <tn> modify <column name> default <value / expression>;
+Ex:
+Sql> create table test18(eid int,sal number(10));
+Sql> alter table test18 modify sal default 8000;
+Testing:
+Sql> insert into test18(eid)values(1021);
+Note:
+=====
+- if we want to view default value of a column then we use "user_tab_columns" datadictionary.
+Ex:
+Sql> desc user_tab_columns;
+Sql> select column_name,data_default from user_tab_columns
+ where table_name='test18';
+Column_name data_default
+-------------------------- --------------------------------
+Sal 8000
+How to remove default value of a column:
+=========================================
+Ex:
+Alter table test18 modify sal default null;
+Column_name data_default
+-------------------------- --------------------------------
+Sal null
