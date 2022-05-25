@@ -1,0 +1,234 @@
+Clauses:
+=========
+- clause is statement which is used to add to sql pre-define query for providing additional facilities 
+are like filtering rows, sorting values,grouping similar values,finding
+Sub total and grand total based on the given values automatically.
+- oracle supports the following clauses.those are ,
+> where - filtering rows ( before grouping data)
+> order by - sorting values
+> group by - grouping similar data
+> having - filtering rows ( after grouping data)
+> rollup - finding sub total & grand total(single column)
+> cube - finding sub total & grand total(multiple columns)
+Syntax:
+---------------
+<sql per-define query> + <clauses>;
+Where :
+=======
+> filtering rows in one by one manner before
+Grouping data in table.
+Syntax:
+where <filtering condition>
+Ex:
+Select * from emp where empno=7788;
+Update emp set sal=8500 where job='clerk';
+Delete from emp where deptno=10;
+Note : "where" clause can be used in "select " ,"update"
+And "delete" commands only.
+Order by:
+=========
+> sorting values based on columns.it can be used
+In "select" command only.
+> by default order by clause arrange values in ascending order but if we want to arrange values in 
+descending order then we use "desc"
+Keyword.
+Syntax:
+---------------
+Select * / <list of column names> from <tn>
+Order by <column name1> <asc / desc> ,<column name2> <asc/desc>,............;
+Ex1:
+Waq to display employee salaries in ascending order ?
+Sol:
+Sql> select * from emp order by sal;
+(or)
+Sql> select sal from emp order by sal;
+Ex2:
+Waq to arrange employee names in descending order ?
+Sol:
+Sql> select ename from emp order by ename desc;
+Ex3:
+Waq to display employee who are working in the 
+Deptno is 20 and arrange those employee salaries in
+Descending order ?
+Sol:
+Sql> select * from emp where deptno=20 order by sal desc;
+Ex4:
+Waq to arrange employee deptno's in ascending order
+And those employee salaries in descending order from 
+Each deptno wise ?
+Sol:
+Sql> select * from emp order by deptno,sal desc;
+Note :
+Order by clause not only on column names eventhough
+We can apply on position of column in select query.
+Ex:
+Sql> select * from emp order by 6;
+Sql> select ename,job,sal from emp order by 3;
+Sql> select ename,sal from emp order by 2;
+Sql> select sal from emp order by 1;
+Note :
+Using order by clause on "null" values column then oracle returns
+"null" values last in ascending order and "null" values are displayed first in descending by default.
+if we want to change this default order of "null" then we use
+Null clauses are " nulls first " and " nulls last ".
+Ex:
+Sql> select * from emp order by comm nulls first;
+Sql> select * from emp order by comm desc nulls last;
+Group by:
+=========
+> grouping similar data based on columns.
+> when we use "group by " we must use "aggregative functions" are
+Sum(),avg(),min(),max(),count().
+> whenever we implement "group by " clause in select statement then
+First grouping similar data based columns and later an aggregative function/(s) will execute on each 
+group of data to produce accurate 
+Result.
+Syntax:
+--------------
+Select <column name1>,<column name2>,......,<aggregative function name1>,
+....... From <tn> group by <column name1>,<column name2>,...........................;
+ group by
+Aggregative funct. |
+Sum(),avg(), job(no.of in each job)
+Min(),max(),count() |
+Clerk | analyst | president | manager | salesman
+Clerk analyst (1) manager salesman
+Clerk (2) manager salesman
+Clerk (3) salesman
+ (4) (4)
+Ex1:
+Waq to find out no.of employee working in each job ?
+Sol:
+Sql> select job,count(*) num_of_employee from emp group by job;
+Ex2:
+Waq to calculate department number wise total salary ?
+Sol:
+Sql> select deptno,sum(sal) total_salary from emp
+Group by deptno order by deptno;
+Ex3:
+Waq to display no.of employee working in each job along with 
+Deptno wise ?
+Sol:
+Sql> select job,deptno,count(*) num_of_employee from emp
+Group by job,deptno;
+Ex4:
+Waq to calculate deptno wise totalsalary where deptno's are 10,20 ?
+Sol:
+Sql> select deptno,sum(sal) total_salary from emp
+Where deptno in(10,20) group by deptno;
+Ex5:
+Waq to calculate deptno wise avg,min,max salaries ?
+Sol:
+Sql> select deptno,avg(sal) avgsal,min(sal) minsal,max(sal) maxsal from emp group
+by deptno order by deptno; 
+Having:
+=======
+> filtering rows after grouping data in table.it can be used along with
+"group by" clause.
+Syntax:
+--------------
+Select <column name1>,<column name2>,......,<aggregative function name1>,
+....... From <tn> group by <column name1>,<column name2>,................................
+Having <filtering condition>;
+Ex1:
+Waq to find out no.of employee of each job in which job no.of employee
+Are more than 3 ?
+Sol:
+Sql> select job,count(*) from emp group by job
+Having count(*)>3;
+Ex2:
+Waq to display sum of salary of deptno's from emp table.if sum of salary 
+Of deptno is less than 9000 ?
+Sol:
+Sql> select deptno,sum(sal) from emp group by deptno
+Having sum(sal)<9000;
+Diff. B/w "where" and "having" clause :
+======================================
+where having
+------------ --------------
+1. Where clause condition 1. Having clause condition
+Is executed on each row of is executed on group of rows
+A table. Of a table.
+2. It can be apply before 2. It can be apply after 
+Group by clause. Group by clause.
+3. It cannot supports 3. It can supports 
+Aggregative functions. Aggregative functions.
+4. Without group by 4. Without group by
+We can use where clause. We cannot use having clause.
+Using all clauses in a single select statement:
+===============================================
+Syntax:
+--------------
+Select <col1>,<col2>,.................,<aggregative function name1>,.....................
+From <table name> [ where <filtering condition>
+ group by <col1>,<col2>,......................
+ having <filtering condition>
+ order by <col1> [asc/desc],<col2> [asc/desc],..............
+ ];
+Ex: 
+select deptno,count(*) from emp
+where sal>1000
+group by deptno
+having count(*)>3
+order by deptno;
+Deptno count(*)
+------ ----------
+ 20 4
+ 30 5
+Order of execution:
+====================
+> from
+> where
+> group by
+> having
+> select
+> order by
+Rollup & cube:
+==============
+> special clauses 
+> to finding sub total & grand total based on columns.
+> working along with "group by" clause.
+> rollup will find sub & grand total based on a single column.
+> cube will find sub & grand total based on multiple columns.
+Syntax:
+--------------
+group by rollup(<col1>,<col2>,<col3>,........,<col n>)
+Ex. On rollup with a single column:
+===================================
+Sql> select deptno,count(*) from emp group by rollup(deptno);
+ deptno count(*)
+---------- ----------
+ 10 3
+ 20 5
+ 30 6
+ 14
+Ex. On rollup with multiple columns:
+====================================
+Sql> select deptno,job,count(*) from emp group by rollup(deptno,job);
+Note: 
+In the above ex. Rollup is finding sub & grand total 
+Based on a single column(deptno).if we want to find sub & grand total
+Then use "cube" clause.
+Syntax:
+--------------
+group by cube(<col1>,<col2>,.....................,<col n>)
+Ex. On cube with a single column:
+================================
+Sql> select deptno,count(*) from emp group by cube(deptno)
+ order by deptno;
+Ex. On cube with multiple columns:
+===================================
+Sql> select deptno,job,count(*) from emp group by cube(deptno,job)
+ order by deptno;
+Grouping_id():
+==============
+> it used more compact way to identify sub and grand total rows.
+> id number 1 : to represent sub total of first grouping column.
+ 2 : to represent sub total of second grouping column.
+ 3 : grand total.
+Syntax:
+--------------
+grouping_id(<col1>,<col2>,.....)
+Ex:
+Select deptno,job,count(*),grouping_id(deptno,job) from emp
+Group by cube(deptno,job) order by deptno;
