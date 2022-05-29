@@ -1,0 +1,48 @@
+Transaction control language
+=================================
+Transaction:
+=============
+- a transaction is a unit of work that is performed against database.
+Ex:
+- if we are inserting / updating / deleting data to / from a table then we are performing a transaction on a 
+table.
+- to manage transactions on database tables then we provide the following command are
+1) commit
+2) rollback
+3) savepoint
+Commit:
+========
+- this command is used to make a transaction is permanent.these are two types.
+I) implicit commit:
+=================
+- these transactions are committed by system(oracle db) by default.
+Ex: ddl commands
+Ii) explicit commit:
+==================
+- these transactions are committed by user as per requirement.
+Ex: dml commands
+Ex:
+Sql> create table branch(bcode int,bname varchar2(10),bloc varchar2(10));
+Step1:
+Sql> insert into branch values(1021,'sbi','hyd');
+Sql> commit;
+Step2:
+Sql> update branch set bloc='mumbai' where bcode=1021;
+Sql> commit;
+Step3:
+Sql> delete from branch where bcode=1021;
+Sql> commit;
+Note: the above dml operations are not possible to "rollback" because those operations are committed by user 
+explicitly.
+Rollback:
+=========
+- this command is used to cancel transaction.but once a transaction is committed then we cannot 
+"rollback(cancel)".
+Ex:
+Sql> delete from branch where bcode=1021;
+Sql> rollback;
+Note: the above "delete" operation is not committed so that user has a chance to rollback that operation.
+Rule:
+=====
+- the rule of transaction tells that either all the statements in the transaction should be executed(all are 
+committed) successfully or none of those statements to be executed.(i.e all are cancelled)
