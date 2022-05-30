@@ -32,12 +32,6 @@ SQL> select * from emp where sal=5000;
       7839 king       president            17-NOV-81       5000                    10
 
 SQL> ---subquey
-SQL>
-SQL> select * from emp where sal=(select * from emp where sal=5000);
-select * from emp where sal=(select * from emp where sal=5000)
-                             *
-ERROR at line 1:
-ORA-00913: too many values
 
 
 SQL> select * from emp where sal=(select max(sal) from emp);
@@ -53,11 +47,6 @@ SQL> select * from emp where hiredate=(select min(hiredate) from emp);
       7369 smith      clerk           7902 17-DEC-80        800                    20
       7369 smith      clerk           7902 17-DEC-80        800                    20
 
-SQL> select * form emp where sal>(select max(sal) from emp where job='salsman');
-select * form emp where sal>(select max(sal) from emp where job='salsman')
-         *
-ERROR at line 1:
-ORA-00923: FROM keyword not found where expected
 
 
 SQL> select * from emp where sal>(select max(sal) from emp where job='salsman');
@@ -80,33 +69,6 @@ SQL> select * from emp where sal>(select max(sal) from emp where job='clerk');
 8 rows selected.
 
 SQL> select * from emp where sal=
-  2  (select max(sal) from emp where sal<)
-  3  (select max(sal) from emp where sal<)
-  4  ;
-(select max(sal) from emp where sal<)
-                                    *
-ERROR at line 2:
-ORA-00936: missing expression
-
-
-SQL> select * from emp where sal=
-  2  ;
-
-*
-ERROR at line 2:
-ORA-00936: missing expression
-
-
-SQL>  select * from emp where sal=
-  2   (select max(sal) from emp where sal<
-  3   (select max(sal) from emp);
- (select max(sal) from emp where sal<
-  *
-ERROR at line 2:
-ORA-00921: unexpected end of SQL command
-
-
-SQL> select * from emp where sal=
   2  (select max(sal) from emp where sal<
   3  (select max(sal) from emp));
 
@@ -124,14 +86,6 @@ SQL>  select * from emp where sal=
 ---------- ---------- --------- ---------- --------- ---------- ---------- ----------
       7566 jones      manager         7839 02-APR-81       2975                    20
 
-SQL> --- select * from emp where sal=
-SQL>  (select max(sal) from emp where sal<
-  2  ;
-
-*
-ERROR at line 2:
-ORA-00936: missing expression
-
 
 SQL> ---Waq to display employee who are getting maximum salary from each job wise?
 SQL> select * from emp where sal in(select max(sal) from emp group by job);
@@ -148,26 +102,9 @@ SQL> select * from emp where sal in(select max(sal) from emp group by job);
 
 7 rows selected.
 
-SQL> ---
-SQL>
+
+
 SQL> ---Waq to display employee who are getting minimum,maximum salaries from emp table?
-SQL>
-SQL> select * from emp where sal in(
-  2  select min(sal) from emp
-  3  union
-  4  select max(sal) from emp;
-select max(sal) from emp
-                       *
-ERROR at line 4:
-ORA-00907: missing right parenthesis
-
-
-SQL> select max(sal) from emp);
-select max(sal) from emp)
-                        *
-ERROR at line 1:
-ORA-00933: SQL command not properly ended
-
 
 SQL> select * from emp where sal in(
   2  select min(sal) from emp
