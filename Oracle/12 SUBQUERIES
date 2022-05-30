@@ -1,3 +1,5 @@
+Subqueries in Oracle
+=====================================================================================
 SQL> select * from emp;
 
      EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
