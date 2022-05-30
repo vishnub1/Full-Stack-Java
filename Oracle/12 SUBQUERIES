@@ -1,0 +1,183 @@
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+      7521 ward       salesman        7698 22-FEB-81       1250        500         30
+      7521 ward       salesman        7698 22-FEB-81       1250        500         30
+      7566 jones      manager         7839 02-APR-81       2975                    20
+      7654 martin     salesman        7698 28-SEP-81       1250       1400         30
+      7698 blake      manager         7839 01-MAY-81       2850                    30
+      7782 clark      manager         7839 09-JUN-81       2450                    10
+      7788 scott      analyst         7566 09-DEC-82       3000                    20
+      7839 king       president            17-NOV-81       5000                    10
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7902 ford       analyst         7566 03-DEC-81       3000                    20
+      7934 miller     clerk           7782 23-JAN-82       1300                    10
+
+14 rows selected.
+
+SQL> select max(sal) from emp;
+
+  MAX(SAL)
+----------
+      5000
+
+SQL> select * from emp where sal=5000;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7839 king       president            17-NOV-81       5000                    10
+
+SQL> ---subquey
+SQL>
+SQL> select * from emp where sal=(select * from emp where sal=5000);
+select * from emp where sal=(select * from emp where sal=5000)
+                             *
+ERROR at line 1:
+ORA-00913: too many values
+
+
+SQL> select * from emp where sal=(select max(sal) from emp);
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7839 king       president            17-NOV-81       5000                    10
+
+SQL> select * from emp where hiredate=(select min(hiredate) from emp);
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+
+SQL> select * form emp where sal>(select max(sal) from emp where job='salsman');
+select * form emp where sal>(select max(sal) from emp where job='salsman')
+         *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select * from emp where sal>(select max(sal) from emp where job='salsman');
+
+no rows selected
+
+SQL> select * from emp where sal>(select max(sal) from emp where job='clerk');
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7566 jones      manager         7839 02-APR-81       2975                    20
+      7698 blake      manager         7839 01-MAY-81       2850                    30
+      7782 clark      manager         7839 09-JUN-81       2450                    10
+      7788 scott      analyst         7566 09-DEC-82       3000                    20
+      7839 king       president            17-NOV-81       5000                    10
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7902 ford       analyst         7566 03-DEC-81       3000                    20
+
+8 rows selected.
+
+SQL> select * from emp where sal=
+  2  (select max(sal) from emp where sal<)
+  3  (select max(sal) from emp where sal<)
+  4  ;
+(select max(sal) from emp where sal<)
+                                    *
+ERROR at line 2:
+ORA-00936: missing expression
+
+
+SQL> select * from emp where sal=
+  2  ;
+
+*
+ERROR at line 2:
+ORA-00936: missing expression
+
+
+SQL>  select * from emp where sal=
+  2   (select max(sal) from emp where sal<
+  3   (select max(sal) from emp);
+ (select max(sal) from emp where sal<
+  *
+ERROR at line 2:
+ORA-00921: unexpected end of SQL command
+
+
+SQL> select * from emp where sal=
+  2  (select max(sal) from emp where sal<
+  3  (select max(sal) from emp));
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7788 scott      analyst         7566 09-DEC-82       3000                    20
+      7902 ford       analyst         7566 03-DEC-81       3000                    20
+
+SQL>  select * from emp where sal=
+  2   (select max(sal) from emp where sal<
+  3   (select max(sal) from emp where sal<
+  4   (select max(sal) from emp)));
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7566 jones      manager         7839 02-APR-81       2975                    20
+
+SQL> --- select * from emp where sal=
+SQL>  (select max(sal) from emp where sal<
+  2  ;
+
+*
+ERROR at line 2:
+ORA-00936: missing expression
+
+
+SQL> ---Waq to display employee who are getting maximum salary from each job wise?
+SQL> select * from emp where sal in(select max(sal) from emp group by job);
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7566 jones      manager         7839 02-APR-81       2975                    20
+      7788 scott      analyst         7566 09-DEC-82       3000                    20
+      7839 king       president            17-NOV-81       5000                    10
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7902 ford       analyst         7566 03-DEC-81       3000                    20
+      7934 miller     clerk           7782 23-JAN-82       1300                    10
+
+7 rows selected.
+
+SQL> ---
+SQL>
+SQL> ---Waq to display employee who are getting minimum,maximum salaries from emp table?
+SQL>
+SQL> select * from emp where sal in(
+  2  select min(sal) from emp
+  3  union
+  4  select max(sal) from emp;
+select max(sal) from emp
+                       *
+ERROR at line 4:
+ORA-00907: missing right parenthesis
+
+
+SQL> select max(sal) from emp);
+select max(sal) from emp)
+                        *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select * from emp where sal in(
+  2  select min(sal) from emp
+  3  union
+  4  select max(sal) from emp);
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+      7839 king       president            17-NOV-81       5000                    10
+
+SQL>
