@@ -1,0 +1,332 @@
+         14 DCL COMMANDS (Oracle)
+    =====================================
+
+
+Step1: connect with system dba:
+----------------------------------------------------------------
+Sql> conn system / manager;
+    Connected.
+Sql> grant dba to scott;
+    Grant succeeded.
+    
+Note: once we take "dba" permissions from system to scott
+Then "scott" will play as a dba.
+Sql> conn scott/tiger;
+Connected.
+Step2: create a new user in oracle db:
+--------------------------------------------------------------------------
+Syntax:
+---------------
+Sql> create user <user name> identified by <password>;
+Ex:
+Sql> create user a identified by a;
+Step3: connect with user "a":
+---------------------------------------------------------
+Sql> conn a/a;
+Error:
+Ora-01045: user a lacks create session privilege; logon denied
+Warning: you are no longer connected to oracle.
+Note:
+----------
+User was created but this user is dummy user because is not having 
+Connect permission.so permission must be given to user "a".
+Step4: granting connect,resource permissions to user "a" :
+--------------------------------------------------------------------------------------------------------------------
+Sql> conn scott/tiger;
+Sql> grant connect,resource to a;
+connect = to connect to oracle db.
+resource = to create tables.
+Step5: now connect with user " a" :
+---------------------------------------------------------------------
+Sql> conn a/a;
+Connected.
+Step6: how to changing user password:
+-----------------------------------------------------------------------------
+Sql> password
+Changing password for a
+Old password: *
+New password: ***
+Retype new password: ***
+Password changed
+Sql> conn a/123;
+Connected.
+Note:
+----------
+1. Password can be changed both user & dba.
+2. Password can be changed but username cannot be changed.
+3. User name is not case sensitive but password is case sensitive.
+Step7: now user "a" can create its own tables and perform db operations
+On tables like below:
+----------------------------------------
+Ex:
+Sql> create table test1(sno int,name varchar2(10));
+Table created.
+Sql> insert into test1 values(1021,'sai');
+Sql> insert into test1 values(1022,'jones');
+Sql> commit;
+Sql> update test1 set name='miller' where sno=1022;
+Sql> commit;
+Sql> delete from test1 where sno=1022;
+Sql> commit;
+Sql> select * from test1;
+Sql> select * from tab;
+Privileges:
+---------------------
+> privilege is right / permission given to the users.all databases are 
+Having two types of privileges.
+i) system privileges
+ii) object privileges
+I) system privileges:
+----------------------------------------
+> system privileges are given by dba.such as create synonym,
+Create view,create materialized view ,create index ...............etc.
+Syntax:
+---------------
+Sql> grant <system privilege> to <user1>,<user2>,<user3>,........;
+Ex:
+Sql> conn scott/tiger;
+Connected.
+Sql> grant create synonym,create view to a;
+Grant succeeded.
+Sql> conn a/123;
+Connected.
+Sql> create synonym syn1 for test1;
+Synonym created.
+Sql> create view v1 as select * from test1;
+View created.
+Note:
+-----------
+> if we want to view system privileges related to user in oracle db
+Then we follow the following datadictionary is " session_privs "
+Syntax:
+Sql> select * from session_privs;
+Ii) object privileges:
+----------------------------------------
+> object privileges are used to users to allowed to perform some 
+Operations on object.these privileges are given by either dba (or)
+Db developer. Oracle having the following object privileges are
+Insert,update,delete,select.
+> these four object privileges are represented by using "all" keyword.
+Syntax:
+--------------
+Grant <object privileges> on <object name> to user1,user2,.....;
+Ex:
+Sql> conn a/123;
+Sql> select * from dept;
+(or)
+Sql> select * from scott.dept;
+ 
+Error at line 1:
+Ora-00942: table or view does not exist
+Note: 
+----------
+User "a" cannot select / access data from dept table because user "a" is not having permission of accessing data 
+from dept.so that we want 
+To take grant select permission from dba.
+Ex:
+Sql> conn scott/tiger
+Connected.
+Sql> grant select on dept to a;
+Grant succeeded.
+Sql> conn a/123;
+Connected.
+Sql> select * from scott.dept;-----allowed
+Sql> insert into scott.dept values(50,'sap','india');---not allow
+Sql> update scott.dept set loc='hyd' where deptno=50;---not allow
+Sql> delete from scott.dept where deptno=50;---not allow
+Note: user "a" cannot perform dml operations on dept table bcz.
+User "a" did not have permission from dba.
+Ex:
+Sql> conn scott/tiger;
+Sql> grant insert,update,delete on dept to a;
+Sql> conn a/123;
+Sql> insert into scott.dept values(50,'sap','india');---allow
+Sql> update scott.dept set loc='hyd' where deptno=50;---allow
+Sql> delete from scott.dept where deptno=50;--- allow
+Note:
+----------
+> to view the information about privilege and also granter then we use
+Following datadictionary " user_tab_privs_made ".
+Ex:
+Sql> conn scott/tiger;
+Sql> desc user_tab_privs_made;
+Sql> select grantee,table_name,grantor,privilege from 
+user_tab_privs_made;
+Grantee table_name grantor privilege
+------------------------------ ------------------------------ ------------------------------ ------------------
+A dept scott delete
+Note:
+----------
+> to view the information about privilege and also who receivied permission(grantee) then we use following 
+datadictionary 
+" user_tab_privs_recd".
+Ex:
+Sql> conn a/123;
+Sql> desc user_tab_privs_recd;
+Sql> select grantor,privilege,table_name from user_tab_privs_recd;
+Grantor privilege table_name
+------------------------------ ---------------------------------------- ----------
+Scott update dept
+Ex:
+Sql> conn scott/tiger
+Sql> revoke all on dept from a;
+> dba(scott) cancelled all permissions of user " a ".
+With grant option:
+-------------------------------------
+When a user receiving permissions "with grant option" 
+Then that user also allow to give object privilege to another user.
+Ex:
+Sql> conn scott/tiger;
+Sql> grant select on dept to u1;
+Sql> conn u1/u1;
+Sql> grant select on scott.dept to u2;
+Error: 
+Insufficient privikeges to grant to u2.
+> to overcome the above problem then use "with grant option " by scott.
+Ex:
+Sql> conn scott/tiger;
+Sql> grant select on dept to u1 with grant option;
+Sql> conn u1/u1;
+Sql> grant select on scott.dept to u2;
+Grant succeeded.
+Sql> conn u2/u2;
+Sql> select * from scott.dept;-----allowed
+Create session:
+-------------------------------
+By using create session system privilege only user are allowed 
+To connect to oracle db otherwise oracle server returns an error.
+Ex:
+Sql> conn scott/tiger;
+Sql> create user u3 identified by u3;
+User created.
+Sql> conn u3/u3;
+Error:
+Ora-01045: user u3 lacks create session privilege; logon denied
+> to overcome the above "create session" privilege problem then we 
+Follow the following solution is,
+Sql> conn scott/tiger;
+Sql> grant create session to u3;
+Sql> conn u3/u3;
+Connected.
+Sql> create table test11(sno int,name varchar2(10));
+Error at line 1:
+Ora-01031: insufficient privileges
+Sql> conn scott/tiger;
+Sql> grant create table to u3;
+Sql> conn u3/u3;
+Sql> create table test11(sno int,name varchar2(10));
+Error at line 1:
+Ora-01950: no privileges on tablespace 'users'
+Sql> conn scott/tiger;
+Sql> grant unlimited tablespace to u3;
+Sql> conn u3/u3;
+Sql> create table test11(sno int,name varchar2(10));
+Table created.
+Sql> insert into test11 values(1021,'sai');
+Sql> update test11 set name='sai kumar' where sno=1021;
+Sql> delete from test11 where sno=1021;
+Sql> select * from test11;
+Note:
+-----------
+To view all users detailes in oracle then we follow the 
+Following datadictionary is "all_users".
+Ex:
+Sql> desc all_users;
+Sql> select username from all_users;
+Syntax to drop a user:
+--------------------------------------------
+Sql> drop user <user name> cascade;
+Ex:
+Sql> drop user a cascade;
+Role:
+----------
+Role is collection of system / object privileges and created by dba.
+Why we need to create role:
+--------------------------------------------------------
+> in realtime environment no.of users working on same project
+In this some group of users requires common set of system privileges 
+Or object privileges at this time dba creating role and assigning that 
+Role to the no.of users.
+Steps to create a role:
+----------------------------------------------
+Step1: create a role:
+-----------------------------------------
+Syntax:
+--------------
+Create role <role name>;
+Step2: assign system / object privileges to a role:
+---------------------------------------------------------------------------------------------------
+Syntax:
+--------------
+Grant system privileges / object privileges to <role name>;
+Step3: assign role to the no.of users:
+--------------------------------------------------------------------------
+Syntax:
+---------------
+Grant rolename to user1,user2,user3,..................;
+Ex:
+Sql> conn scott/tiger;
+Sql> create role r1;
+Role created.
+Sql> grant create synonym to r1;
+Grant succeeded.
+Sql> grant r1 to u1,u2;
+Grant succeeded.
+Note1:
+------------
+> to view system privileges related to role then we are using the following datadictionary is " role_sys_privs ".
+Ex:
+Sql> desc role_sys_privs;
+Sql> select role,privilege from role_sys_privs where role='r1';
+Role privilege
+------------------------------ --------------------------------
+R1 create synonym
+Note2:
+------------
+> to view object privileges related to role then we use the following 
+Datadictionary is " role_tab_privs "
+Ex:
+Sql> desc role_tab_privs;
+Sql> select role,privilege,table_name from role_tab_privs
+Where role='r1';
+Role privilege table_name
+------------------------------ --------------------- ----------------------
+R1 select dept
+Note3:
+-------------
+> to view roles granted to a user in oracle db then use the following
+Datadictionary is "user_role_privs".
+Ex:
+Sql> conn u1/u1;
+Sql> desc user_role_privs;
+Sql> select username,granted_role from user_role_privs;
+Username granted_role
+------------------------------ ---------------------------
+U1 r1
+Note:
+----------
+"with grant option " doesn't work on role.
+Ex:
+Sql> conn scott/tiger;
+Sql> grant insert on dept to r1 with grant option;
+Error at line 1:
+Ora-01926: cannot grant to a role with grant option
+Syntax to drop a role:
+--------------------------------------------
+Sql> drop role <role name>;
+Ex:
+Sql> drop role r1;
+Granting permissions to different levels:
+------------------------------------------------------------------------------------
+Syntax:
+--------------.
+Grant <system privileges> to <user> / <role> / <public>;
+&
+Grant <object privileges> on <object name> to <user> / <role> / <public>;
+Revoking permissions to different levels:
+-----------------------------------------------------------------------------------
+Syntax:
+----------------
+Revoke <system privileges> from <user> / <role> / <public>;
+&
+Revoke <object privileges> on <object name> from <user> / <role> / <public>;
