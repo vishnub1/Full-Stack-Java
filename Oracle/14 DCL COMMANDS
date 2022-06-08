@@ -103,6 +103,8 @@ Syntax:
 Sql> select * from session_privs;
 Ii) object privileges:
 ----------------------------------------
+
+
 > object privileges are used to users to allowed to perform some 
 Operations on object.these privileges are given by either dba (or)
 Db developer. Oracle having the following object privileges are
