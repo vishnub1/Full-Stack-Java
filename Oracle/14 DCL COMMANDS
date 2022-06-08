@@ -59,6 +59,7 @@ Step7: now user "a" can create its own tables and perform db operations
 On tables like below:
 ----------------------------------------
 Ex:
+
 Sql> create table test1(sno int,name varchar2(10));
 Table created.
 Sql> insert into test1 values(1021,'sai');
