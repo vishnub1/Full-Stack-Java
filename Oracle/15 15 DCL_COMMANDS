@@ -1,0 +1,36 @@
+        DB Security
+  ==========================
+  
+Authentication: 
+---------------
+Authentication is a process of verifying the credentials (username & 
+password) of a user to login into the system.
+
+Authorization: 
+--------------
+Authorization is process of verifying whether the user as permissions 
+to perform any operation on the database.
+
+Data Control Language:
+----------------------
+DCL commands are used to enforce database security in multiple users’ database 
+environment. These are two types….
+  • GRANT
+  • REVOKE
+
+GRANT:
+-----
+Grant command is used for giving a privilege or permission for a user to perform 
+operations on the database.
+Syntax: GRANT <Privilege Name> on <object name> To {User} ;
+
+Privilege Name:
+Used to granted permission to the users for some rights are ALL and SELECT.
+Object Name:
+It is the name of database objects like Table, Views and Stored Procedure etc….
+User:
+Used for to whom an access rights is being granted.
+REVOKE:
+Revoke command removes user access rights / privileges to the database OR taking back 
+the permission that is given to a user.
+Syntax: Revoke <privilege name> on <object name > from {user};
