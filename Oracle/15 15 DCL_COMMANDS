@@ -35,8 +35,12 @@ Object Name:
 It is the name of database objects like Table, Views and Stored Procedure etc….
 
 User:
+------
 Used for to whom an access rights is being granted.
+
 REVOKE:
+-------
 Revoke command removes user access rights / privileges to the database OR taking back 
 the permission that is given to a user.
+
 Syntax: Revoke <privilege name> on <object name > from {user};
