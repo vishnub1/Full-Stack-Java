@@ -24,10 +24,16 @@ Grant command is used for giving a privilege or permission for a user to perform
 operations on the database.
 Syntax: GRANT <Privilege Name> on <object name> To {User} ;
 
+
 Privilege Name:
+---------------
 Used to granted permission to the users for some rights are ALL and SELECT.
+
+
 Object Name:
+------------
 It is the name of database objects like Table, Views and Stored Procedure etc….
+
 User:
 Used for to whom an access rights is being granted.
 REVOKE:
