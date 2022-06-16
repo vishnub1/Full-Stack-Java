@@ -4,12 +4,14 @@
 Again classified into two ways those are
 1. Declarative / pre -define dataintegrity(using constraints)
 2. Procedural / user - define dataintegrity(using triggers)
+
 Declarative / pre -define dataintegrity:
 ======================================
 - this dataintegrity can be implemented with help of "constraints".these are again three types,
 - entity integrity
 - referencial integrity
 - domain integrity
+
 Entity integrity:
 ================
 - it ensure that each row uniquly identify in a table.to implement 
