@@ -40,12 +40,16 @@ the following constraint types are
 - primary key
 - foreign key(references key)
 - all databases are supporting the following two types of methods to define constraints. those are
+
+
 I) column level:
 ===============
 - in this method we are defining constraints on individual columns.
 Syntax:
 --------------
 Create table <tn>(<column name1><datatype>[size] <constraint type>,......);
+
+
 Ii) table level:
 ==============
 - in this method we are defining constraints after all columns are declared.(end of the table 
@@ -56,9 +60,12 @@ Create table <tn>(<column name1><datatype>[size],<column name2>
 <datatype>[size],......................................,<constraint type>(<column 
 name1>
 ,<column name2>,.................));
+
+
 Unique:
 =======
 - to restricted duplicate values but accepting nulls into a column.
+
 I) column level:
 -------------------------------
 Ex:
@@ -67,6 +74,7 @@ Testing:
 Sql> insert into test1 values(1,'a');---allowed
 Sql> insert into test1 values(1,'a');---not allowed
 Sql> insert into test1 values(null,null);----allowed
+
 Ii) table level:
 ==============
 Ex:
@@ -78,10 +86,13 @@ Sql> insert into test2 values(2,'a');---allowed
 Note : when we apply unique constraint on group of columns then we called as "composite unique" 
 constraint.in this mechanism individual columns are accepting duplicate values but duplicate 
 combination of columns data is not allowed.
+
+
 Not null:
 =========
 - to restricted nulls but accepting duplicate values into a column.
 - not null constraint not supports "table level".
+
 Column level:
 ==============
 Ex:
@@ -90,9 +101,12 @@ Testing:
 Sql> insert into test3 values(101,'a');----allow
 Sql> insert into test3 values(101,'a');---allow
 Sql> insert into test3 values(null,null);----not allow
+
+
 Check:
 ======
 - to check values with user defined condition before accepting values into a column.
+
 I) column level:
 ===============
 Ex:
@@ -100,6 +114,7 @@ Sql> create table test4(eid int,sal number(10) check(sal>=10000));
 Testing:
 Sql> insert into test4 values(1021,9500);---not allow
 Sql> insert into test4 values(1021,10000);---allow
+
 Ii) table level:
 ==============
 Ex:
@@ -108,10 +123,13 @@ Check(ename=lower(ename) and sal>8000));
 Testing:
 Sql> insert into test5 values('sai',7500);---not allow
 Sql> insert into test5 values('sai',9500);---allow
+
+
 Primary key:
 ============
 - to restricted duplicates & nulls into a column.
 - a table should have only "one primary key".
+
 I) column level:
 ===============
 Ex:
@@ -126,6 +144,7 @@ Testing:
 Sql> insert into test6 values(10021,'c');-----allow
 Sql> insert into test6 values(10021,'c++');----not allow
 Sql> insert into test6 values(null,'c++');----not allow
+
 Ii) table level:
 ==============
 Ex:
@@ -139,9 +158,12 @@ Sql> insert into test7 values(1021,'icici','srnagar');----allow
 Note : when we apply primary key constraint on group of columns then we called as "composite primary 
 key" constraint.in this mechanism individual columns are accepting duplicate values but duplicate 
 combination of columns data is not allowed.
+
+
 Foreign key(references key):
 =============================
 - foreign key is used to establish relationship between tables.
+
 Basic things:
 =============
 1. We have a common column name(optional) but recommended.
