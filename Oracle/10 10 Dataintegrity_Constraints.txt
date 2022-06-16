@@ -176,6 +176,7 @@ Basic things:
  values only.
 6. Generally primary key is not allowed duplicate and null values where as foreign key is allowed 
 duplicate & null values.
+
 I) column level:
 ===============
 Syntax:
@@ -197,6 +198,8 @@ Sql>insert into emp1 values(1022,'jones',10);
 Sql>insert into emp1 values(1023,'miller',20);
 - once we establish relationship between tables there are two rules are come into picture.those 
 are 
+
+
 1) insertion rule:
 =================
 - we cannot insert values into foreign key(references key) column those values are not existing 
@@ -205,6 +208,8 @@ Ex:
 Sql> insert into emp1 values(1026,'scott',30);
 Error at line 1:
 Ora-02291: integrity constraint (scott.sys_c005468) violated - parent key not found.
+
+
 2) deletion rule:
 =================
 - when we try to delete a record from parent table and those associated records are available in 
@@ -214,6 +219,7 @@ Ex:
 Sql> delete from dept1 where deptno=20;
 Error at line 1:
 Ora-02292: integrity constraint (scott.sys_c005468) violated - child record found.
+
 Note: 
 =====
 If we want to delete a record from parent table when they have 
@@ -221,6 +227,7 @@ Corresponding child records in child table then we provide some set of rules to 
 operations on parent table.those rules are called as "cascade rules".
 i) on delete cascade 
 ii) on delete set null
+
 I) on delete cascade :
 =====================
 - whenever we are deleting a record from parent table then that associated child records are 
@@ -240,6 +247,8 @@ Sql>insert into emp2 values(1022,'jones',10);
 Sql>insert into emp2 values(1023,'miller',20);
 Testing:
 Sql> delete from dept2 where deptno=20;----allowed
+
+
 Ii) on delete set null:
 =====================
 whenever we are deleting a record from parent table then that associated child records are set to 
@@ -259,6 +268,7 @@ Sql>insert into emp3 values(1022,'jones',10);
 Sql>insert into emp3 values(1023,'miller',20);
 Testing:
 Sql> delete from dept3 where deptno=10;----allowed
+
 Syntax for table level:
 ========================
 Create table 
@@ -266,6 +276,9 @@ Create table
 Foreign key(<col1>,<col2>,........) References <parent table 
 name>(<col1>,<col2>,...................);
 How to create a user define constraint key name to constraints:
+
+
+
 Pre-define constraint name:
 ===============================
 - whenever we are applying constraint on a particular column then db server(system) internally 
@@ -273,12 +286,15 @@ generate an unique id number (or) an unique constraint key name automatically fo
 constrant.
 Ex:
 Sql> create table test8(sno int primary key,name varchar2(10));
+
 Testing:
 ---------------
 Sql> insert into test8 values(1,'a');---allowed
 Sql> insert into test8 values(1,'b');---not allowed
 Error:
 Ora-00001: unique constraint (scott.sys_c005475) violated
+
+
 User define constraint name:
 ================================
 - in place of pre define constraint name we can also create a user defined constraint key name (or) 
@@ -297,6 +313,8 @@ Ora-00001: unique constraint (scott.pk_sno) violated
 Sql> insert into test10 values(2,'a');
 Error at line 1:
 Ora-00001: unique constraint (scott.uq_name) violated
+
+
 Data dictionaries (or) read only tables:
 =======================================
 - whenever we are installing oracle s/w internally oracle server is creating some pre-define tables 
@@ -309,6 +327,7 @@ dictionaries are also called as "read only tables" in oracle db.
 Syntax:
 --------------
 Sql> select * from dict;
+
 Note1:
 ======
 if we want to view all constraints infromation of a particular table then we use "user_constraints" 
@@ -321,6 +340,7 @@ Constraint_name constraint_type
 ---------------------------------- -------------------------------
 Pk_sno p
 Uq_name u
+
 Note2:
 ======
 - if we want to view constraint name along with column name of a particular table then we use " 
@@ -333,6 +353,8 @@ Constraint_name column_name
 ---------------------------------- ----------------------------
 Uq_name name
 Pk_sno sno
+
+
 Note3:
 ======
 to view a logical condition of check constraint then we need to call "search_condition" column 
@@ -346,6 +368,8 @@ Sql> select search_condition from user_constraints
 Search_condition
 ------------------------------------
 Sal>5000
+
+
 Note4:
 ======
 to view all columns information of a particular table then we use "user_tab_columns" 
@@ -354,18 +378,24 @@ Ex:
 Sql> desc user_tab_columns;
 Sql> select column_name from user_tab_columns
  where table_name='emp';
+
+
+
 How to find no.of rows in a table:
 =================================
 Sql> select count(*) from emp;
 Count(*)
 ----------------
  14
+
+
 How to find no.of columns in a table:
 ====================================
 Sql> select count(*) from user_tab_columns where table_name='emp';
  count(*)
 ------------------
  8
+
 How to add constraints to an existing table:
 ============================================
 Syntax:
@@ -374,13 +404,20 @@ Alter table <tn> add constraint <constraint key name> <constraint type>
 (<column name>);
 Ex:
 Sql> create table test12(eid int,ename varchar2(10),sal number(10));
+
+
 I) adding primary key:
 =====================
 Sql> alter table test12 add constraint pk_eid primary key(eid);
+
+
 Ii) adding unique,check constraint:
 ===================================
 Sql> alter table test12 add constraint uq_ename unique(ename);
 Sql> alter table test12 add constraint chk_sal check(sal=10000);
+
+
+
 Iii) adding "not null" constraint:
 ================================
 Syntax:
@@ -389,6 +426,8 @@ Alter table <tn> modify <column name> constraint <constraint key name>
 Not null;
 Ex:
 Sql> alter table test12 modify ename constraint nn_ename not null;
+
+
 Iv) adding foreign key constraint:
 ==================================
 Syntax:
@@ -403,11 +442,15 @@ Table created.
 Ex:
 Sql> alter table test13 add constraint fk_eid foreign key(eid)
  references test12(eid) on delete cascade;
+
+
 How to drop constraint from an existing table:
 ===============================================
 Syntax:
 ---------------
 Alter table <tn> drop constraint <constraint key name>;
+
+
 I) dropping primary key:
 =======================
 Method1:
@@ -420,6 +463,8 @@ Method2:
 "cascade" statement.
 Ex:
 Sql> alter table test12 drop constraint pk_eid cascade;
+
+
 Ii) dropping unique,check,not null constrant:
 =============================================
 Sql> alter table test12 drop constraint uq_ename;
@@ -443,7 +488,9 @@ Sql> select constraint_name from user_cons_columns
 Constraint_name
 ------------------------------
 Sno_pk
-How disable / enable constraint:
+
+
+How disable / enable constraint
 ================================
 - by default constraints are enable mode.if we want to disable constraint temp. Then we use 
 "disable" keyword.it means that constraint is existing in db but not work till it make as "enable".
@@ -476,6 +523,9 @@ Sql> insert into test15 values('scott',6000);---not allowed
 Error at line 1:
 Ora-02290: check constraint (scott.sys_c005492) violated
 Sql> insert into test15 values('scott',5000);------allowed
+
+
+
 Default constraint:
 ===================
 - it a special type of constraint which is used to assign a user define default value to a column.
@@ -494,6 +544,9 @@ Output:
 --------------- ----------
  1 8500
  2 5000
+
+
+
 How to add default value to an existing table:
 ==============================================
 Syntax:
@@ -514,6 +567,8 @@ Sql> select column_name,data_default from user_tab_columns
 Column_name data_default
 -------------------------- --------------------------------
 Sal 8000
+
+
 How to remove default value of a column:
 =========================================
 Ex:
