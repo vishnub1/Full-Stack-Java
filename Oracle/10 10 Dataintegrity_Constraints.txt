@@ -16,14 +16,20 @@ Entity integrity:
 ================
 - it ensure that each row uniquly identify in a table.to implement 
 This mechanism we use primary key or unique constraint.
+
+
 Referencial integrity:
 ======================
 - it ensure that to create relationship between tables.to implement this mechanism then we use 
 foreign key(referencial key).
+
+
 Domain integrity:
 =================
 - domain is nothing but column.it ensure that to check values with user define condition before 
 accepting values into a column.to perform this mechanism we use check, default, not null constraints.
+
+
 Constraints:
 =============
 Constraints are used to restricted unwanted(invalid) data into table all databases are supporting 
