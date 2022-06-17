@@ -1,0 +1,501 @@
+
+SQL*Plus: Release 21.0.0.0.0 - Production on Fri Jun 17 17:34:38 2022
+Version 21.3.0.0.0
+
+Copyright (c) 1982, 2021, Oracle.  All rights reserved.
+
+Enter user-name: LION/TIGER
+Last Successful login time: Wed Jun 08 2022 19:32:47 +05:30
+
+Connected to:
+Oracle Database 21c Enterprise Edition Release 21.0.0.0.0 - Production
+Version 21.3.0.0.0
+
+SQL>
+SQL> select max(sal) from emp;
+
+  MAX(SAL)
+----------
+      5000
+
+SQL> select * from emp where sal=(inner query);
+select * from emp where sal=(inner query)
+                                   *
+ERROR at line 1:
+ORA-00907: missing right parenthesis
+
+
+SQL> select * from emp where sal=(select max(sal) from emp);
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7839 king       president            17-NOV-81       5000
+        10
+
+
+SQL> selct * from emp where job=(select job from emp where ename='smith');
+SP2-0734: unknown command beginning "selct * fr..." - rest of line ignored.
+SQL> select * from emp where job=(select job from emp where ename='smith');
+select * from emp where job=(select job from emp where ename='smith')
+                             *
+ERROR at line 1:
+ORA-01427: single-row subquery returns more than one row
+
+
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7369 smith      clerk           7902 17-DEC-80        800
+        20
+
+      7369 smith      clerk           7902 17-DEC-80        800
+        20
+
+      7521 ward       salesman        7698 22-FEB-81       1250        500
+        30
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7521 ward       salesman        7698 22-FEB-81       1250        500
+        30
+
+      7566 jones      manager         7839 02-APR-81       2975
+        20
+
+      7654 martin     salesman        7698 28-SEP-81       1250       1400
+        30
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7698 blake      manager         7839 01-MAY-81       2850
+        30
+
+      7782 clark      manager         7839 09-JUN-81       2450
+        10
+
+      7788 scott      analyst         7566 09-DEC-82       3000
+        20
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7839 king       president            17-NOV-81       5000
+        10
+
+      7844 turner     salesman        7698 08-SEP-81       1500          0
+        30
+
+      7844 turner     salesman        7698 08-SEP-81       1500          0
+        30
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7902 ford       analyst         7566 03-DEC-81       3000
+        20
+
+      7934 miller     clerk           7782 23-JAN-82       1300
+        10
+
+
+14 rows selected.
+
+SQL> set lines 200;
+SQL> set pagesize 200;
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+      7521 ward       salesman        7698 22-FEB-81       1250        500         30
+      7521 ward       salesman        7698 22-FEB-81       1250        500         30
+      7566 jones      manager         7839 02-APR-81       2975                    20
+      7654 martin     salesman        7698 28-SEP-81       1250       1400         30
+      7698 blake      manager         7839 01-MAY-81       2850                    30
+      7782 clark      manager         7839 09-JUN-81       2450                    10
+      7788 scott      analyst         7566 09-DEC-82       3000                    20
+      7839 king       president            17-NOV-81       5000                    10
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7902 ford       analyst         7566 03-DEC-81       3000                    20
+      7934 miller     clerk           7782 23-JAN-82       1300                    10
+
+14 rows selected.
+
+SQL> select * from emp where job=(select job from emp where ename='blake');
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7566 jones      manager         7839 02-APR-81       2975                    20
+      7698 blake      manager         7839 01-MAY-81       2850                    30
+      7782 clark      manager         7839 09-JUN-81       2450                    10
+
+SQL> select * from emp where sal>(select max(sal) from emp where job='salesman');
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7566 jones      manager         7839 02-APR-81       2975                    20
+      7698 blake      manager         7839 01-MAY-81       2850                    30
+      7782 clark      manager         7839 09-JUN-81       2450                    10
+      7788 scott      analyst         7566 09-DEC-82       3000                    20
+      7839 king       president            17-NOV-81       5000                    10
+      7902 ford       analyst         7566 03-DEC-81       3000                    20
+
+6 rows selected.
+
+SQL> select * from emp where job=(select job from emp where ename='blake')
+  2  and sal>(select sal from emp where ename='blake');
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7566 jones      manager         7839 02-APR-81       2975                    20
+
+SQL> select * from emp where hiredate=(select min(hiredate)from emp);
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+
+SQL> select max(sal) from emp where sal<(select max(sal) from emp);
+
+  MAX(SAL)
+----------
+      3000
+
+SQL> select * from emp where sal=(select max(sal) from emp where sal<(select max(sal)from emp));
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7788 scott      analyst         7566 09-DEC-82       3000                    20
+      7902 ford       analyst         7566 03-DEC-81       3000                    20
+
+SQL> ---Display emp details who are getting 3rd high salary in emo table?
+SQL>
+SQL> select * from emo where sal=
+  2  ;
+
+*
+ERROR at line 2:
+ORA-00936: missing expression
+
+
+SQL> select * from emp where sal=
+  2  (select max(sal) from emp where sal<
+  3  (select max(sal) from emp where sal<
+  4  (select max(sal) from emp)));
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7566 jones      manager         7839 02-APR-81       2975                    20
+
+SQL> update emp set sal=(select max(sal) from emp) where empno=7900;
+
+0 rows updated.
+
+SQL> update emp set sal=(select max(sal) from emp) where empno=5000;
+
+0 rows updated.
+
+SQL> delete from emo where job=(select job from where ename='scott');
+delete from emo where job=(select job from where ename='scott')
+                                           *
+ERROR at line 1:
+ORA-00903: invalid table name
+
+
+SQL> delete from emp where job=(select job from where ename='scott');
+delete from emp where job=(select job from where ename='scott')
+                                           *
+ERROR at line 1:
+ORA-00903: invalid table name
+
+
+SQL> delete from emp where job=(select job from emp where ename='scott');
+
+2 rows deleted.
+
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+      7521 ward       salesman        7698 22-FEB-81       1250        500         30
+      7521 ward       salesman        7698 22-FEB-81       1250        500         30
+      7566 jones      manager         7839 02-APR-81       2975                    20
+      7654 martin     salesman        7698 28-SEP-81       1250       1400         30
+      7698 blake      manager         7839 01-MAY-81       2850                    30
+      7782 clark      manager         7839 09-JUN-81       2450                    10
+      7839 king       president            17-NOV-81       5000                    10
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7934 miller     clerk           7782 23-JAN-82       1300                    10
+
+12 rows selected.
+
+SQL> select * from emp where job in(select job from emp where ename='smith' or ename='clark');
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+      7934 miller     clerk           7782 23-JAN-82       1300                    10
+      7566 jones      manager         7839 02-APR-81       2975                    20
+      7698 blake      manager         7839 01-MAY-81       2850                    30
+      7782 clark      manager         7839 09-JUN-81       2450                    10
+
+6 rows selected.
+
+SQL> select * from emp where sal in(
+  2  select min(sal) from emp
+  3  union
+  4  select max(sal) from emp;
+select max(sal) from emp
+                       *
+ERROR at line 4:
+ORA-00907: missing right parenthesis
+
+
+SQL> select * from emp where sal>any(select sal from emp where job='salesman');
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7839 king       president            17-NOV-81       5000                    10
+      7566 jones      manager         7839 02-APR-81       2975                    20
+      7698 blake      manager         7839 01-MAY-81       2850                    30
+      7782 clark      manager         7839 09-JUN-81       2450                    10
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7934 miller     clerk           7782 23-JAN-82       1300                    10
+
+7 rows selected.
+
+SQL> select * from emp where sal>all(select sal from emp where job='salesman');
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7782 clark      manager         7839 09-JUN-81       2450                    10
+      7698 blake      manager         7839 01-MAY-81       2850                    30
+      7566 jones      manager         7839 02-APR-81       2975                    20
+      7839 king       president            17-NOV-81       5000                    10
+
+SQL> --
+SQL>
+SQL>
+SQL> ----MULTIPLE COLUMN SUBQUERY
+SQL>
+SQL> selct * from emp where(job,sal)in(select job,max(sal) from emp group by job);
+SP2-0734: unknown command beginning "selct * fr..." - rest of line ignored.
+SQL> select * from emp where(job,sal)in (select job,max(sal) from emp group by job);
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7934 miller     clerk           7782 23-JAN-82       1300                    10
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+      7566 jones      manager         7839 02-APR-81       2975                    20
+      7839 king       president            17-NOV-81       5000                    10
+
+SQL> select rownum,ename from emp;
+
+    ROWNUM ENAME
+---------- ----------
+         1 smith
+         2 smith
+         3 ward
+         4 ward
+         5 jones
+         6 martin
+         7 blake
+         8 clark
+         9 king
+        10 turner
+        11 turner
+        12 miller
+
+12 rows selected.
+
+SQL> select rownum,ename,deptno from emp where deptno=10;
+
+    ROWNUM ENAME          DEPTNO
+---------- ---------- ----------
+         1 clark              10
+         2 king               10
+         3 miller             10
+
+SQL> select * from emp where rownum=1;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 smith      clerk           7902 17-DEC-80        800                    20
+
+SQL> select * from emp where rownum=12;
+
+no rows selected
+
+SQL> ---NOte generally rownum is always starts with 1 from every selected row
+SQL>
+SQL>
+SQL> select * from emp where rownum<=2
+  2  minus
+  3  select * from emp where rownum=1;
+
+no rows selected
+
+SQL>
+SQL>
+SQL> select * from emp where rownum<9
+  2  minus
+  3  select * from emp where rownum<3;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7521 ward       salesman        7698 22-FEB-81       1250        500         30
+      7566 jones      manager         7839 02-APR-81       2975                    20
+      7654 martin     salesman        7698 28-SEP-81       1250       1400         30
+      7698 blake      manager         7839 01-MAY-81       2850                    30
+      7782 clark      manager         7839 09-JUN-81       2450                    10
+
+SQL> select * from emp where rownum<=5
+  2  minus
+  3  select * from emp where rownum<=4
+  4  ;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7566 jones      manager         7839 02-APR-81       2975                    20
+
+SQL>
+SQL>
+SQL>
+SQL>
+SQL> -----Inline View
+SQL>
+SQL>
+SQL> Select * from (select ename,sal,sal*12 annusal from emp)where annusal>25000;
+
+ENAME             SAL    ANNUSAL
+---------- ---------- ----------
+jones            2975      35700
+blake            2850      34200
+clark            2450      29400
+king             5000      60000
+
+SQL> select * from(select * from emp order by sal desc) where rownum<=5;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7839 king       president            17-NOV-81       5000                    10
+      7566 jones      manager         7839 02-APR-81       2975                    20
+      7698 blake      manager         7839 01-MAY-81       2850                    30
+      7782 clark      manager         7839 09-JUN-81       2450                    10
+      7844 turner     salesman        7698 08-SEP-81       1500          0         30
+
+SQL> select * from(select rownum r,emp.* from emp)where r in(1,3,5,7,9);
+
+         R      EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+          DEPTNO
+---------- ---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+         1       7369 smith      clerk           7902 17-DEC-80        800
+              20
+         3       7521 ward       salesman        7698 22-FEB-81       1250        500
+              30
+         5       7566 jones      manager         7839 02-APR-81       2975
+              20
+         7       7698 blake      manager         7839 01-MAY-81       2850
+              30
+         9       7839 king       president            17-NOV-81       5000
+              10
+
+SQL> select * from(select rownum r,emp.* from emp)where r=1 or r=(select count(*) from emp);
+
+         R      EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+          DEPTNO
+---------- ---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+         1       7369 smith      clerk           7902 17-DEC-80        800
+              20
+        12       7934 miller     clerk           7782 23-JAN-82       1300
+              10
+
+SQL> select * from(select rownum r,emo.* from emp)where r=1 or
+  2  r=(select count(*) from emp);
+select * from(select rownum r,emo.* from emp)where r=1 or
+                                  *
+ERROR at line 1:
+ORA-00904: "EMO": invalid identifier
+
+
+SQL> select ename,sal,row_number() over(order by sal desc) ranks from emp;
+
+ENAME             SAL      RANKS
+---------- ---------- ----------
+king             5000          1
+jones            2975          2
+blake            2850          3
+clark            2450          4
+turner           1500          5
+turner           1500          6
+miller           1300          7
+ward             1250          8
+ward             1250          9
+martin           1250         10
+smith             800         11
+smith             800         12
+
+12 rows selected.
+
+SQL> select ename,sal,rank() over(order by sal desc) ranks from emp;
+
+ENAME             SAL      RANKS
+---------- ---------- ----------
+king             5000          1
+jones            2975          2
+blake            2850          3
+clark            2450          4
+turner           1500          5
+turner           1500          5
+miller           1300          7
+ward             1250          8
+ward             1250          8
+martin           1250          8
+smith             800         11
+smith             800         11
+
+12 rows selected.
+
+SQL> select * from(select ename,job,hiredate,dense_rank() over(partition by job order by hiredate) r from emp) where r=4;
+
+no rows selected
+
+SQL> elect(select count(*) from emp) as emptotal,(select count(*) from dept) as
+SP2-0734: unknown command beginning "elect(sele..." - rest of line ignored.
+SQL> depttotal from dual;
+SP2-0734: unknown command beginning "depttotal ..." - rest of line ignored.
+SQL>
+SQL> select(select sum(sal) from emp where deptno=10) as "10",
+  2   (select sum(sal) from emp where deptno=20) as "20",
+  3   (select sum(sal) from emp where deptno=30) as "30"
+  4   from dual;
+
+        10         20         30
+---------- ---------- ----------
+      8750       4575       9600
+
+SQL>
