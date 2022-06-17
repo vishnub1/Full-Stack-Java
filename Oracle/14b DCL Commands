@@ -1,0 +1,533 @@
+
+SQL> conn
+Enter user-name: system/redhat
+Connected.
+SQL> grant dba to LION;
+
+Grant succeeded.
+
+SQL> conn
+Enter user-name: LION/TIGER
+Connected.
+SQL>
+SQL>
+SQL> ------------------------------
+SQL> create user a identified by a;
+create user a identified by a
+            *
+ERROR at line 1:
+ORA-65096: invalid common user or role name
+
+
+SQL> create user a identified by a;
+create user a identified by a
+            *
+ERROR at line 1:
+ORA-65096: invalid common user or role name
+
+
+SQL> conn a/a
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> conn
+Enter user-name: a/a
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+SQL> conn
+Enter user-name: LION/TIGER
+Connected.
+SQL> grant connect,resource to a;
+
+Grant succeeded.
+
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL>
+SQL> create user a identified by a;
+create user a identified by a
+            *
+ERROR at line 1:
+ORA-65096: invalid common user or role name
+
+
+SQL>
+SQL> ----PRIVILAGES
+SQL> ---system privilages  & object privilages
+SQL>
+SQL> conn
+Enter user-name: LION/TIGER;
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> grant create synonym,create view to LION;
+SP2-0640: Not connected
+SQL> conn
+Enter user-name: LION/TIGER;
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+SQL> conn
+Enter user-name: system/redhat
+Connected.
+SQL> grant create synonym,create view to LION;
+
+Grant succeeded.
+
+SQL> create synonym syn1 for test1;
+
+Synonym created.
+
+SQL> create view v1 as select * from test1;
+create view v1 as select * from test1
+                                *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> create view v1 as select * from emp;
+create view v1 as select * from emp
+                                *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> create view v1 as select * from test1;
+create view v1 as select * from test1
+                                *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select * from session_privs;
+
+PRIVILEGE
+----------------------------------------
+ALTER SYSTEM
+AUDIT SYSTEM
+CREATE SESSION
+ALTER SESSION
+RESTRICTED SESSION
+CREATE TABLESPACE
+ALTER TABLESPACE
+MANAGE TABLESPACE
+DROP TABLESPACE
+UNLIMITED TABLESPACE
+CREATE USER
+BECOME USER
+ALTER USER
+DROP USER
+CREATE ROLLBACK SEGMENT
+ALTER ROLLBACK SEGMENT
+DROP ROLLBACK SEGMENT
+CREATE TABLE
+CREATE ANY TABLE
+ALTER ANY TABLE
+BACKUP ANY TABLE
+DROP ANY TABLE
+LOCK ANY TABLE
+COMMENT ANY TABLE
+SELECT ANY TABLE
+INSERT ANY TABLE
+UPDATE ANY TABLE
+DELETE ANY TABLE
+REDEFINE ANY TABLE
+CREATE CLUSTER
+CREATE ANY CLUSTER
+ALTER ANY CLUSTER
+DROP ANY CLUSTER
+CREATE ANY INDEX
+ALTER ANY INDEX
+DROP ANY INDEX
+CREATE SYNONYM
+CREATE ANY SYNONYM
+DROP ANY SYNONYM
+CREATE PUBLIC SYNONYM
+DROP PUBLIC SYNONYM
+CREATE VIEW
+CREATE ANY VIEW
+DROP ANY VIEW
+CREATE SEQUENCE
+CREATE ANY SEQUENCE
+ALTER ANY SEQUENCE
+DROP ANY SEQUENCE
+SELECT ANY SEQUENCE
+CREATE DATABASE LINK
+CREATE PUBLIC DATABASE LINK
+DROP PUBLIC DATABASE LINK
+CREATE ROLE
+DROP ANY ROLE
+GRANT ANY ROLE
+ALTER ANY ROLE
+AUDIT ANY
+ALTER DATABASE
+FORCE TRANSACTION
+FORCE ANY TRANSACTION
+CREATE PROCEDURE
+CREATE ANY PROCEDURE
+ALTER ANY PROCEDURE
+DROP ANY PROCEDURE
+EXECUTE ANY PROCEDURE
+CREATE TRIGGER
+CREATE ANY TRIGGER
+ALTER ANY TRIGGER
+DROP ANY TRIGGER
+CREATE PROFILE
+ALTER PROFILE
+DROP PROFILE
+ALTER RESOURCE COST
+ANALYZE ANY
+GRANT ANY PRIVILEGE
+CREATE MATERIALIZED VIEW
+CREATE ANY MATERIALIZED VIEW
+ALTER ANY MATERIALIZED VIEW
+DROP ANY MATERIALIZED VIEW
+CREATE ANY DIRECTORY
+DROP ANY DIRECTORY
+CREATE TYPE
+CREATE ANY TYPE
+ALTER ANY TYPE
+DROP ANY TYPE
+EXECUTE ANY TYPE
+UNDER ANY TYPE
+CREATE LIBRARY
+CREATE ANY LIBRARY
+ALTER ANY LIBRARY
+DROP ANY LIBRARY
+EXECUTE ANY LIBRARY
+CREATE OPERATOR
+CREATE ANY OPERATOR
+ALTER ANY OPERATOR
+DROP ANY OPERATOR
+EXECUTE ANY OPERATOR
+CREATE INDEXTYPE
+CREATE ANY INDEXTYPE
+ALTER ANY INDEXTYPE
+DROP ANY INDEXTYPE
+UNDER ANY VIEW
+QUERY REWRITE
+GLOBAL QUERY REWRITE
+EXECUTE ANY INDEXTYPE
+UNDER ANY TABLE
+CREATE DIMENSION
+CREATE ANY DIMENSION
+ALTER ANY DIMENSION
+DROP ANY DIMENSION
+MANAGE ANY QUEUE
+ENQUEUE ANY QUEUE
+DEQUEUE ANY QUEUE
+CREATE ANY CONTEXT
+DROP ANY CONTEXT
+CREATE ANY OUTLINE
+ALTER ANY OUTLINE
+DROP ANY OUTLINE
+ADMINISTER RESOURCE MANAGER
+ADMINISTER DATABASE TRIGGER
+MERGE ANY VIEW
+ON COMMIT REFRESH
+RESUMABLE
+SELECT ANY DICTIONARY
+DEBUG CONNECT SESSION
+DEBUG CONNECT ANY
+DEBUG ANY PROCEDURE
+FLASHBACK ANY TABLE
+GRANT ANY OBJECT PRIVILEGE
+CREATE EVALUATION CONTEXT
+CREATE ANY EVALUATION CONTEXT
+ALTER ANY EVALUATION CONTEXT
+DROP ANY EVALUATION CONTEXT
+EXECUTE ANY EVALUATION CONTEXT
+CREATE RULE SET
+CREATE ANY RULE SET
+ALTER ANY RULE SET
+DROP ANY RULE SET
+EXECUTE ANY RULE SET
+EXPORT FULL DATABASE
+IMPORT FULL DATABASE
+CREATE RULE
+CREATE ANY RULE
+ALTER ANY RULE
+DROP ANY RULE
+EXECUTE ANY RULE
+ANALYZE ANY DICTIONARY
+ADVISOR
+CREATE JOB
+CREATE ANY JOB
+EXECUTE ANY PROGRAM
+EXECUTE ANY CLASS
+MANAGE SCHEDULER
+SELECT ANY TRANSACTION
+DROP ANY SQL PROFILE
+ALTER ANY SQL PROFILE
+ADMINISTER SQL TUNING SET
+ADMINISTER ANY SQL TUNING SET
+CREATE ANY SQL PROFILE
+MANAGE FILE GROUP
+MANAGE ANY FILE GROUP
+READ ANY FILE GROUP
+CHANGE NOTIFICATION
+CREATE EXTERNAL JOB
+CREATE ANY EDITION
+DROP ANY EDITION
+ALTER ANY EDITION
+CREATE ASSEMBLY
+CREATE ANY ASSEMBLY
+ALTER ANY ASSEMBLY
+DROP ANY ASSEMBLY
+EXECUTE ANY ASSEMBLY
+EXECUTE ASSEMBLY
+CREATE MINING MODEL
+CREATE ANY MINING MODEL
+DROP ANY MINING MODEL
+SELECT ANY MINING MODEL
+ALTER ANY MINING MODEL
+COMMENT ANY MINING MODEL
+CREATE CUBE DIMENSION
+ALTER ANY CUBE DIMENSION
+CREATE ANY CUBE DIMENSION
+DELETE ANY CUBE DIMENSION
+DROP ANY CUBE DIMENSION
+INSERT ANY CUBE DIMENSION
+SELECT ANY CUBE DIMENSION
+CREATE CUBE
+ALTER ANY CUBE
+CREATE ANY CUBE
+DROP ANY CUBE
+SELECT ANY CUBE
+UPDATE ANY CUBE
+CREATE MEASURE FOLDER
+CREATE ANY MEASURE FOLDER
+DELETE ANY MEASURE FOLDER
+DROP ANY MEASURE FOLDER
+INSERT ANY MEASURE FOLDER
+
+PRIVILEGE
+----------------------------------------
+CREATE CUBE BUILD PROCESS
+CREATE ANY CUBE BUILD PROCESS
+DROP ANY CUBE BUILD PROCESS
+UPDATE ANY CUBE BUILD PROCESS
+UPDATE ANY CUBE DIMENSION
+ADMINISTER SQL MANAGEMENT OBJECT
+CREATE SQL TRANSLATION PROFILE
+CREATE ANY SQL TRANSLATION PROFILE
+ALTER ANY SQL TRANSLATION PROFILE
+USE ANY SQL TRANSLATION PROFILE
+DROP ANY SQL TRANSLATION PROFILE
+EM EXPRESS CONNECT
+FLASHBACK ARCHIVE ADMINISTER
+EXEMPT REDACTION POLICY
+CREATE PLUGGABLE DATABASE
+SET CONTAINER
+CREATE LOCKDOWN PROFILE
+DROP LOCKDOWN PROFILE
+ALTER LOCKDOWN PROFILE
+CREATE CREDENTIAL
+CREATE ANY CREDENTIAL
+LOGMINING
+USE ANY JOB RESOURCE
+EXECUTE DYNAMIC MLE
+SELECT ANY MEASURE FOLDER
+ALTER ANY MEASURE FOLDER
+SELECT ANY CUBE BUILD PROCESS
+ALTER ANY CUBE BUILD PROCESS
+READ ANY TABLE
+CREATE ATTRIBUTE DIMENSION
+CREATE ANY ATTRIBUTE DIMENSION
+ALTER ANY ATTRIBUTE DIMENSION
+DROP ANY ATTRIBUTE DIMENSION
+CREATE HIERARCHY
+CREATE ANY HIERARCHY
+ALTER ANY HIERARCHY
+DROP ANY HIERARCHY
+CREATE ANALYTIC VIEW
+CREATE ANY ANALYTIC VIEW
+ALTER ANY ANALYTIC VIEW
+DROP ANY ANALYTIC VIEW
+ENABLE DIAGNOSTICS
+CREATE LOGICAL PARTITION TRACKING
+DROP LOGICAL PARTITION TRACKING
+
+241 rows selected.
+
+SQL> conn
+Enter user-name: LION/TIGER
+Connected.
+SQL> select * frmo scott.dept;
+select * frmo scott.dept
+         *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> conn
+Enter user-name: sysytem/redhat
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> conn
+Enter user-name: system/redhat
+Connected.
+SQL> select * from LION.dept;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 accounting     new york
+        20 research       dallas
+        30 sales          chicago
+        40 operations     boston
+
+SQL> grant select on dept to LION;
+
+Grant succeeded.
+
+SQL> select * from LION.dept;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 accounting     new york
+        20 research       dallas
+        30 sales          chicago
+        40 operations     boston
+
+SQL> desc user_tab_privs_made;
+ Name                                                                                Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ GRANTEE                                                                              VARCHAR2(128)
+ TABLE_NAME                                                                           VARCHAR2(128)
+ GRANTOR                                                                              VARCHAR2(128)
+ PRIVILEGE                                                                            VARCHAR2(40)
+ GRANTABLE                                                                            VARCHAR2(3)
+ HIERARCHY                                                                            VARCHAR2(3)
+ COMMON                                                                               VARCHAR2(3)
+ TYPE                                                                                 VARCHAR2(24)
+ INHERITED                                                                            VARCHAR2(3)
+
+SQL> desc user_tab_privs_recd;
+ Name                                                                         Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ OWNER                                                                         VARCHAR2(128)
+ TABLE_NAME                                                                    VARCHAR2(128)
+ GRANTOR                                                                       VARCHAR2(128)
+ PRIVILEGE                                                                     VARCHAR2(40)
+ GRANTABLE                                                                     VARCHAR2(3)
+ HIERARCHY                                                                     VARCHAR2(3)
+ COMMON                                                                        VARCHAR2(3)
+ TYPE                                                                          VARCHAR2(24)
+ INHERITED                                                                     VARCHAR2(3)
+
+SQL> conn
+Enter user-name: system/redhat
+Connected.
+SQL> revoke all on dept from a;
+
+Revoke succeeded.
+
+SQL> dba(SYSTEM) cancelled all permission of user "LION"
+SP2-0734: unknown command beginning "dba(SYSTEM..." - rest of line ignored.
+SQL> dba(SYSTEM) cancelled all permission of user "LION";
+SP2-0734: unknown command beginning "dba(SYSTEM..." - rest of line ignored.
+SQL> grant select on dept to u1;
+grant select on dept to u1
+                        *
+ERROR at line 1:
+ORA-01917: user or role 'U1' does not exist
+
+
+SQL> grant create session to LION;
+
+Grant succeeded.
+
+SQL>
+SQL> grant create table to LION;
+
+Grant succeeded.
+
+SQL> Grant unlimited tablespace to u3;
+Grant unlimited tablespace to u3
+                              *
+ERROR at line 1:
+ORA-01917: user or role 'U3' does not exist
+
+
+SQL> Grant unlimited tablespace to LION;
+
+Grant succeeded.
+
+SQL> DESC ALL_USERS;
+ Name                                                                              Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ USERNAME                                                                          NOT NULL VARCHAR2(128)
+ USER_ID                                                                           NOT NULL NUMBER
+ CREATED                                                                           NOT NULL DATE
+ COMMON                                                                             VARCHAR2(3)
+ ORACLE_MAINTAINED                                                                  VARCHAR2(1)
+ INHERITED                                                                          VARCHAR2(3)
+ DEFAULT_COLLATION                                                                  VARCHAR2(100)
+ IMPLICIT                                                                           VARCHAR2(3)
+ ALL_SHARD                                                                          VARCHAR2(3)
+ EXTERNAL_SHARD                                                                     VARCHAR2(3)
+
+SQL> DROP USER LION CASCADE;
+DROP USER LION CASCADE
+*
+ERROR at line 1:
+ORA-28014: cannot drop administrative user or role
+
+
+SQL> CREATE ROLE R1;
+CREATE ROLE R1
+            *
+ERROR at line 1:
+ORA-65096: invalid common user or role name
+
+
+SQL> CONN
+Enter user-name: sysytem/redhat
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> CONN
+Enter user-name: LION/TIGER
+Connected.
+SQL> crate role r1;
+SP2-0734: unknown command beginning "crate role..." - rest of line ignored.
+SQL> create role r1;
+create role r1
+            *
+ERROR at line 1:
+ORA-65096: invalid common user or role name
+
+
+SQL> create role r1;
+create role r1
+            *
+ERROR at line 1:
+ORA-65096: invalid common user or role name
+
+
+SQL>
+SQL> grant system privilages/object privileges to r1;
+grant system privilages/object privileges to r1
+      *
+ERROR at line 1:
+ORA-00990: missing or invalid privilege
+
+
+SQL>
