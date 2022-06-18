@@ -1,0 +1,94 @@
+Synonyms:
+---------------------
+
+> it a db object to create permanant alias names for 
+Db objects like table,view,procedure ................etc.
+> synonym is nothing but alternative name for db objects like 
+Table ,view,procedure.....
+> synonyms are created to reduce lengthy table name.
+
+Types:
+------------
+1. Private synonym (default)
+2. Public synonym
+
+
+1.private synonyms:
+---------------------------------------
+> these synonyms are created by users which have permission.
+Syntax:
+---------------
+Create synonym <synonym name> for [username].<db object name>;
+Ex:
+Sql> conn scott/tiger;
+Sql> create user u1 identified by u1;
+Sql> grant connect,resource to u1; 
+Sql> conn u1/u1;
+Sql> create table studentdetails(stid int,sname varchar2(10));
+Sql> insert into studentdetails values(1021,'sai');
+Sql> insert into studentdetails values(1022,'jones');
+Sql> commit;
+Sql> create synonym syn1 for studentdetails;
+Error at line 1:
+Ora-01031: insufficient privileges
+Sql> conn scott/tiger;
+Sql> grant create synonym to u1;
+Grant succeeded.
+Sql> conn u1/u1;
+Sql> create synonym syn1 for studentdetails;
+Synonym created.
+Note: once we created synonym insted of using table name we can use 
+ synonym name for accessing data / to perform db operations on table.
+Testing:
+-----------------
+Sql> select * from syn1; 
+Sql> insert into syn1 values(1023,'miller');
+Sql> update syn1 set sname='scott' where stid=1022;
+Sql> delete from syn1 where stid=1023;
+2. Public synonyms:
+--------------------------------------
+> these synonyms are created by dba.
+> we should have "create public synonym " privilege.and it can accessing 
+By all users.
+> for hiding the information about username,object name(table).
+Syntax:
+---------------
+Create public synonym <synonym name> for [user name].<db object name>;
+Ex:
+Sql> conn scott/tiger;
+Sql> create public synonym pub_syn for dept;
+Sql> grant all on pub_syn to u1,u2,u3;
+(or)
+Sql> grant all on pub_syn to public;
+Sql> conn u1/u1;
+Sql> select * from pub_syn;---allowed
+Sql> conn u2/u2;
+Sql> select * from pub_syn;---allowed
+Note:
+-----------
+Once we created public synonym then any user can access that public
+Synonym without "username".
+Note:
+-----------
+To view all synonyms information in oracle db then we use 
+"user_synonyms" datadictionary.
+Ex:
+Sql> desc user_synonyms;
+Sql> select synonym_name,table_name from user_synonyms;
+Note:
+-----------
+To view all private and public synonyms of a particular user in oracle 
+Database then we "all_synonyms" datadictionary.
+Ex:
+Sql> desc all_synonyms;
+Sql> select synonym_name,table_name from all_synonyms where table_name='dept';
+Syntax to drop synonyms:
+----------------------------------------------------
+Sql> drop synonym <synonym name>;
+Ex:
+Sql> drop synonym syn_dept;
+> in this case we dropping private synonyms only and dropping by user.
+Sql> drop public synonym <synonym name>;
+Ex:
+Sql> drop public synonym pub_syn;
+> in this case we dropping public synonyms only and dropping by dba.
