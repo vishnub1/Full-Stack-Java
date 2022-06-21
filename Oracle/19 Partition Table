@@ -1,0 +1,97 @@
+Partition table:
+================
+- generally partitions are created on very large scale database tables for dividing into multiple small parts 
+and each part is called as 
+"partition".
+- by splitting a large table into smaller parts then data can access very fast because there is less data to sacn 
+instead of large data of a table.
+Types of partitions:
+====================
+1) range partition
+2) list partition
+3) hash partition
+- if we want to access a particular partition then we follow 
+The following, 
+Syntax:
+========
+Sql> select * from <tn> partition(<partition name>);
+1) range partition:
+==================
+- in this method we are creating partitions table based on a particular range value.
+Syntax:
+=======
+Create table <tn>(<column name1> <datatypes>[size],......................................)
+Partition by range(<key column name>)(partition <partition name1> values less than(value),partition <partition 
+name2> values less than(value),...........................................................);
+Ex:
+Create table test1(eid int,ename varchar2(10),sal number(10))
+Partition by range(sal)(partition p1 values less than(1000),
+Partition p2 values less than(2000),partition p3 values less than(3000));
+Testing:
+Sql> insert into test1 values(1,'sai',2500);
+Sql> insert into test1 values(2,'jones',500);
+....................................................................................;
+.....................................................................................;
+Calling a particular partition:
+===============================
+Sql> select * from test1 partition(p1);
+ Eid ename sal
+-------------- ---------- ----------
+ 2 jones 500
+2) list partition:
+================
+- in this method we are creating partitions based on list of values.
+Syntax:
+=======
+Create table <tn>(<column name1> <datatype>[size],........................................)
+Partition by list(<key column name>)(partition <partition name1> values(value1,value2,......),partition <partition 
+name2> values(value1,value2,......),
+............,partition others values(default));
+Ex:
+Create table test2(sno int,cname varchar2(10))
+Partition by list(cname)(partition p1 values('oracle','mysql'),
+Partition p2 values('java','php'),partition others values(default));
+Testing:
+Sql> insert into test2 values(1,'oracle');
+Sql> insert into test2 values(2,'c');
+...................................................................
+Calling a particular partition:
+==============================
+Sql> select * from test2 partition(p1);
+ Sno cname
+-------------- ----------
+ 1 oracle
+3) hash partition:
+=================
+- in this method partitions are created by the system by default.
+Syntax:
+=======
+Create table <tn>(<column name1> <datatype>[size],........................................)
+Partition by hash(<key column name>) partitions <number>;
+Ex:
+Sql> create table test3(sno int,sal number(10)) partition by hash(sal) partitions 5;
+Note: if we want to view all partitions information in oracle database then we use "user_tab_partitions" data 
+dictionary.
+Ex:
+Sql> desc user_tab_partitions;
+Sql> select partition_name from user_tab_partitions
+ Where table_name='test3';
+Adding a new partition:
+=======================
+Syntax:
+---------------
+Alter table <tn> add partition <partition name> values less than(value);
+Ex:
+Sql> alter table test1 add partition p4 values less than(4000);
+Dropping a partition:
+=====================
+Syntax:
+--------------
+Alter table <tn> drop partition <partition name>;
+Ex:
+Sql> alter table test1 drop partition p1;
+Note: if we want to know whether table is partitioned or not then we use
+"user_tables" data dictionary.
+Ex:
+Sql> desc user_tables;
+Sql> select partitioned from user_tables where table_name='emp';
