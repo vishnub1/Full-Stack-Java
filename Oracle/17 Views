@@ -1,0 +1,162 @@
+Views:
+ ==========
+> view is db object is called subset of a table.
+> view is also called as virtual table because it doesn't
+ store data and it doesn't occupy any memory.
+> viwe is creating by using "select query" for getting the req.information from table (base table).
+Advantages of views:
+-----------------------------------------
+1. It is providing security.it means that to each user can be given permission to access specific columns & specific 
+rows from a table.
+2. If data is accessed and entered through a view,the db server will check 
+ data to ensure that it meets specified intergrity constraints rules or not.
+3. Query simplify it means that to reduce complex query.
+Types of views:
+------------------------------
+> a user can create the following two types of views on base tables
+ those are,
+1. Simple views
+2. Complex views
+1. Simple views:
+------------------------------
+> when we create a view to access required data from a single base table
+ is called as simple views.
+> through a simple view we can perform all dml (insert,update,delete) 
+ operations on base table.
+Syntax:
+---------------
+Create view <view name> as select * from <tn> [ where <condition>];
+Ex1:
+Sql> create view sv1 as select * from dept;
+Sql> select * from sv1;
+Dml operations through a simple view:
+----------------------------------------------------------------------------
+Sql> insert into sv1 values(50,'dba','hyd');
+Sql> update sv1 set loc='india' where deptno=50;
+Sql> delete from sv1 where deptno=50;
+Note: whenever we perform dml operations on view internally the view will perform those operations on base 
+table.here view will act as
+An interface between user and base table.
+ user <----------> <view> <-----------> base table 
+Ex2:
+Sql> create view sv2 as select empno,ename,job,sal from emp;
+Testing:
+----------------
+Sql> insert into sv2 values(1122,'sai','hr',8000);---allow
+Sql> insert into sv2 values(1122,'warner','sr.hr',9500);----not allow (empno column is 
+primary key column in emp table)
+With check option:
+-------------------------------------
+It is a constraint which is used to restrict rows on base table through
+A view while performing dml operations.
+Ex:
+Sql> create view sv3 as select * from test1 where sal=18000 
+ with check option;
+Testing:
+Sql> insert into sv3 values(1025,'scott',12000);---not allow
+Sql> insert into sv3 values(1025,'scott',58000);---not allow
+Sql> insert into sv3 values(1025,'scott',18000);---allowed
+With read only:
+-----------------------------
+If we created a view "with read only" clause then we restrict dml operations.we allow "select" and "desc" 
+commands.
+Ex:
+Sql> create view sv4 as select * from dept with read only;
+Note: now we cannot perform dml(insert/update/delete) operations through a view on base table.
+2.complex views:
+--------------------------------
+> a view is called as complex view ,
+i) when we create on multiple base tables.
+ii) when we create a view with aggregative functions,group by,having 
+clauses,set operators,sub-query,distinct key word.
+> complex view are not always supports dml operations.
+Ex1:
+Sql> create view cv1 as select * from student s inner join course c
+ on s.cid=c.cid;
+Error at line 1:
+Ora-00957: duplicate column name
+Note: when we create a view on on base tables then we should not allow
+ duplicate column names.to avoid this problem then use "using"
+ clause. 
+Sql> create view cv1 as select * from student s inner join course c 
+ using(cid);
+> now we created a complex view on multiple tables.but not allow dml operations.
+Ex2:
+Sql> create view cv2 as 
+ select * from emp_hyd
+ union
+ select * from emp_chennai;
+> the above complex view cv2 is not allow dml operations.
+Ex3:
+Sql> create view cv3 as select deptno,sum(sal) from emp group by deptno;
+ 
+Error at line 1:
+Ora-00998: must name this expression with a column alias
+Note: when we create a view with function then we must create alias name
+For those functions otherwise oracle returns an error.
+Ex:
+Sql> create view cv3 as select deptno,sum(sal) as sumsal from emp
+ group by deptno;
+> the above complex view cv3 not allowed dml operations.
+Ex4:
+Sql> create view cv4 as select empno,ename,sal,d.deptno,dname,loc from emp e 
+inner join dept d on e.deptno=d.deptno;
+Testing:
+----------------
+Sql> update cv4 set sal=500 where empno=7788;---allowed
+Sql> delete from cv4 where empno=7782;----aloowed
+Sql> insert into cv4 values(1122,'sai',6000,10,'sap','hyd');---not allow
+Note:
+----------
+Generally complex view are not allowed to perform dml operations
+But we perform update,delete operations on key preserved table(i.e primary key) 
+So that complex views are supporting dml operation partially.
+Force views:
+-------------------------
+Generally views are created based on tables,but force views are created
+Without tables.
+Syntax:
+----------------
+Create force view <view name> as select * from <tn>;
+Ex:
+Sql> create force view fv1 as select * from test;
+Warning: view created with compilation errors.
+Testing:
+Sql> select * from fv1;
+Error at line 1:
+Ora-04063: view "scott.fv1" has errors
+Sql> desc fv1;
+Error:
+Ora-24372: invalid object for describe
+> to activate a force view then we should create a tbale with the name 
+As "test".
+Ex:
+Sql> create table test(sno int,name varchar2(10));
+Table created.
+Testing:
+Sql> select * from fv1;----activated
+Sql> desc fv1;----activated
+Note:
+------------
+To view all views details in oracle db then we use the following 
+Datadictionay is "user_views".
+Ex:
+Sql> desc user_views;
+Sql> select view_name from user_views;
+Syntax to drop a view:
+-------------------------------------------
+Sql> drop view <view name>;
+Ex:
+Sql> drop view sv1;
+Sql> drop view cv1;
+Sql> drop view fv1;
+Diff. B/w synonym and view:
+-----------------------------------------------------
+synonym view
+----------------- ----------
+1. It is a mirror of table. 1. It is a subset of table.
+2. Created on a single table. 2. Created on multiple tables.
+3. Create on entire table. 3. Created on specific rows and specific
+ columns of table.
+4. Not supports data abstraction 4. Supporting data abstraction mechanism.
+ mechanism.(hiding data of table).
