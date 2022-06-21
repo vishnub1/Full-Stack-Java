@@ -1,0 +1,190 @@
+==========
+- sequence is a db object.which is used to generate sequence numbers on a particular column automatically.
+Syntax:
+=======
+Create sequence <sequence name>
+[ start with n ]
+[ minvalue n ]
+[ increment by n ]
+[ maxvalue n ]
+[ no cycle / cycle ]
+[ no cache / cache n ];
+Parameters of sequence object:
+================================
+Start with n:
+============
+- it represent the starting sequence number.here "n" is represent witn number.
+Minvalue n:
+===========
+- it specify the minimum value of the sequence.here "n" is represent witn number.
+Increment by n:
+===============
+- it specify the incremental value in between sequence numbers.here "n" is represent witn number. 
+Maxvalue n:
+===========
+- it specify the maximum value of the sequence.here "n" is represent witn number.
+No cycle:
+=========
+- it is default parameter.if we created sequence with " no cycle " then sequence starts from start with value and 
+generate values upto max value.after reaching max value then sequence is stop.
+Cycle :
+=======
+- if we created a sequence with "cycle" then sequence starts from start with value and generate values upto 
+maxvalue.after reaching max value
+Then sequence will starts with minvalue.
+No cache:
+==========
+- it is default parameter.when we created a sequence with "no cache"
+Parameter then the set of sequence values are storing into database
+Memory.every time we want access sequence numbers then oracle server will go to database memory and return 
+to user.so that it will degrade the performance of an application.
+Cache n:
+========
+- when we created a sequence with "cache " parameter then system is allocating temp. Memory(cache) and in this 
+memory we will store the set sequence numbers.whenever user want to access sequence numbers then oracle 
+server will go to cache memory and return to user.
+- accessing data from cache is much faster than accessing data from database.it will increse the 
+performance of an application.here "n" is represent the size of cache file.minimum size of cache is 2kb and 
+maximum size of cache is 20kb.
+Note:
+=====
+- to work with sequence object we should use the following two 
+Pseudo columns are "nextval" and "currval".
+Nextval:
+=========
+- it is used to generate sequence numbers on a particular column.
+Syntax:
+=======
+Select <sequence name>.<nextval> from dual;
+Currval:
+========
+- it is used to show the current value of the sequence.
+Syntax:
+=======
+Select <sequence name>.<currval> from dual;
+Ex1:
+====
+Step1:
+-----------
+Sql> create sequence sq1
+ start with 1
+ minvalue 1
+ increment by 1
+ maxvalue 3;
+Sequence created.
+Step2:
+-----------
+Sql> create table test1(sno int,name varchar2(10));
+Table created.
+Testing:
+=========
+Sql> insert into test1 values(sq1.nextval,'&name');
+Enter value for name: a
+/
+Enter value for name: b
+/
+Enter value for name: c
+/
+Enter value for name: d
+Error at line 1:
+Ora-08004: sequence sq1.nextval exceeds maxvalue and cannot be instantiated.
+Altering a sequence:
+=====================
+Syntax:
+=======
+Alter sequence <sequence name> <parameter name> n;
+Ex:
+Sql> alter sequence sq1 maxvalue 5;
+Sequence altered.
+Testing:
+Sql> insert into test1 values(sq1.nextval,'&name');
+Enter value for name: d
+/
+Enter value for name: e
+Output:
+========
+Sql> select * from test1;
+Sno name
+------- ----------
+ 1 a
+ 2 b
+ 3 c
+ 4 d
+ 5 e
+Note: we can alter all parameters except "start with " parameter.
+=====
+Ex2:
+Sql> create sequence sq2
+start with 1
+minvalue 1
+increment by 1
+maxvalue 3
+cycle
+cache 2;
+Sequence created.
+Sql> create table test2(sno int,name varchar2(10));
+Table created.
+Testing:
+========
+Sql> insert into test2 values(sq2.nextval,'&name');
+Enter value for name: a
+/
+Enter value for name: b
+/
+Enter value for name: c
+/
+.....................................
+.....................................
+Output:
+========
+Sql> select * from test2;
+Sno name
+------- ----------
+ 1 a
+ 2 b
+ 3 c
+ 1 d
+ 2 e
+ 3 f
+Ex3:
+====
+Sql> create sequence sq3
+start with 3
+minvalue 1
+increment by 1
+maxvalue 5
+cycle
+cache 2;
+Sequence created.
+Sql> create table test3(sno int,name varchar2(10));
+Table created.
+Testing:
+=========
+Sql> insert into test3 values(sq3.nextval,'&name');
+Enter value for name: a
+/
+......................................
+......................................
+Output:
+========
+Sql> select * from test3;
+ sno name
+-------------- ----------
+ 3 a
+ 4 b
+ 5 c
+ 1 m
+ 2 n
+ 3 o
+ 4 p
+ 5 q
+Note: if we want to view all sequences in oracle database then we use
+"user_sequences" data dictionary.
+Ex:
+Sql> desc user_sequences;
+Sql> select sequence_name from user_sequences;
+Syntax to drop a sequence:
+===========================
+Sql> drop sequence <sequence name>;
+Ex:
+Sql> drop sequence sq1;
