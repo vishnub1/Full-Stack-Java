@@ -1,10 +1,11 @@
-Partition table:
-================
+          Partition table:
+        ======================
 - generally partitions are created on very large scale database tables for dividing into multiple small parts 
 and each part is called as 
 "partition".
 - by splitting a large table into smaller parts then data can access very fast because there is less data to sacn 
 instead of large data of a table.
+
 Types of partitions:
 ====================
 1) range partition
@@ -15,6 +16,8 @@ The following,
 Syntax:
 ========
 Sql> select * from <tn> partition(<partition name>);
+
+
 1) range partition:
 ==================
 - in this method we are creating partitions table based on a particular range value.
@@ -32,12 +35,15 @@ Sql> insert into test1 values(1,'sai',2500);
 Sql> insert into test1 values(2,'jones',500);
 ....................................................................................;
 .....................................................................................;
+
+
 Calling a particular partition:
 ===============================
 Sql> select * from test1 partition(p1);
  Eid ename sal
 -------------- ---------- ----------
  2 jones 500
+
 2) list partition:
 ================
 - in this method we are creating partitions based on list of values.
@@ -55,12 +61,16 @@ Testing:
 Sql> insert into test2 values(1,'oracle');
 Sql> insert into test2 values(2,'c');
 ...................................................................
+
+
 Calling a particular partition:
 ==============================
 Sql> select * from test2 partition(p1);
  Sno cname
 -------------- ----------
  1 oracle
+
+
 3) hash partition:
 =================
 - in this method partitions are created by the system by default.
@@ -76,6 +86,8 @@ Ex:
 Sql> desc user_tab_partitions;
 Sql> select partition_name from user_tab_partitions
  Where table_name='test3';
+
+
 Adding a new partition:
 =======================
 Syntax:
@@ -83,6 +95,8 @@ Syntax:
 Alter table <tn> add partition <partition name> values less than(value);
 Ex:
 Sql> alter table test1 add partition p4 values less than(4000);
+
+
 Dropping a partition:
 =====================
 Syntax:
