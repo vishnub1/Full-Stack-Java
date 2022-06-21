@@ -1,8 +1,11 @@
 Materialized views:
+===============================
+
 ➢ Oracle 8i introduced materialized views. Generally views doesn’t store any data where as 
 materialized views are storing data.
 ➢ These views are used in data warehousing and handling by dba .materialized views also created 
 from base tables. 
+
 Differences between view and materialized view:
  view materialized view
 View does not store any data. Materialized view store
