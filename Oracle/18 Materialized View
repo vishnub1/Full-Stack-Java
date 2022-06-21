@@ -1,0 +1,88 @@
+Materialized views:
+➢ Oracle 8i introduced materialized views. Generally views doesn’t store any data where as 
+materialized views are storing data.
+➢ These views are used in data warehousing and handling by dba .materialized views also created 
+from base tables. 
+Differences between view and materialized view:
+ view materialized view
+View does not store any data. Materialized view store
+Data.
+When we dropping base table then view 
+cannot be accessible
+When we dropping base
+Table then materialized
+View can be accessible.
+We can perform dml operations on view We cannot perform dml
+Operations on materialized view
+Syntax:
+Create materialized view 
+<view name> as select * from 
+<table name>;
+Ex:
+Sql> create table test (sno int, name varchar2 (20));
+Sql> create materialized view mv1 as select * from test;
+Error:
+Table 'test' does not contain a primary key constraint.
+Note: when we create materialized view
+On base table then base table should have 
+Primary key constraint otherwise oracle returns an error.
+Ex:
+Sql> create table test1 (sno int primary key, name varchar2 (20));
+Sql> insert into test1 values (1,'a');
+…………………………………………………;
+Sql> create view v1 as select * from test1;
+View created.
+Sql> create materialized view mv1 as select * from test1;
+Materialized view created.
+Testing:
+Sql> update test1 set name=lower (name);
+➢ Here, base table (test1) and view (v1) table data is updated but materialized view (mv1) table 
+data is not updated. If we want to update data in materialized view then we refresh materialized 
+view by using the following syntax,
+Syntax:
+Exec dbms_mview.refresh (‘materialized view name’);
+Ex: exec dbms_mview.refresh (‘mv1’);
+On demand / on commit:
+In oracle we are refreshing materialized view in two ways those are,
+I) on demand:
+It is a default refereshing method.in this method we are refreshing 
+Materialized view by using "dbms_mview" procedure.
+Syntax:
+Execute dbms_mview.refresh ('mview name');
+Ex:
+Execute dbms_mview.refresh ('mv1');
+Ii) on commit:
+We can refreshing a materialized view without using "dbms_mview" but using "on commit" method.
+Syntax:
+Create materialized view <view name> 
+Refresh on commit
+As select * from <tn>;
+Ex:
+Create table test2 (eid int primary key,
+Sal number (10));
+Ex:
+Create materialized view mv2 refresh on commit
+As select * from test2;
+Testing:
+Sql> insert into test2 values (101,25000);
+Sql> commit;
+Sql> select * from mv2;
+Note: if we want to view materialized views
+Then we are using the following data dictionary is
+“user_mviews”.
+Ex:
+Sql> desc user_mviews;
+Sql> select mview_name from user_mviews;
+Syntax to drop materialized view:
+Sql> drop materialized view <mview name>;
+Sql> drop materialized view mv1;
+Materialized view dropped.
+Force view:
+Syntax:
+Create force view <view name> as
+Select * from <tn>;
+Ex:
+Sql> create force view fv1 as select * from test1;
+Warning: view created with compilation errors.
+Sql> create table test1(sno int,name varchar2(20));
+Table created.
