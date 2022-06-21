@@ -4,6 +4,8 @@ Views:
 > view is also called as virtual table because it doesn't
  store data and it doesn't occupy any memory.
 > viwe is creating by using "select query" for getting the req.information from table (base table).
+
+
 Advantages of views:
 -----------------------------------------
 1. It is providing security.it means that to each user can be given permission to access specific columns & specific 
@@ -11,6 +13,8 @@ rows from a table.
 2. If data is accessed and entered through a view,the db server will check 
  data to ensure that it meets specified intergrity constraints rules or not.
 3. Query simplify it means that to reduce complex query.
+
+
 Types of views:
 ------------------------------
 > a user can create the following two types of views on base tables
@@ -19,16 +23,21 @@ Types of views:
 2. Complex views
 1. Simple views:
 ------------------------------
+
 > when we create a view to access required data from a single base table
  is called as simple views.
 > through a simple view we can perform all dml (insert,update,delete) 
  operations on base table.
+
+
 Syntax:
 ---------------
 Create view <view name> as select * from <tn> [ where <condition>];
 Ex1:
 Sql> create view sv1 as select * from dept;
 Sql> select * from sv1;
+
+
 Dml operations through a simple view:
 ----------------------------------------------------------------------------
 Sql> insert into sv1 values(50,'dba','hyd');
@@ -40,11 +49,15 @@ An interface between user and base table.
  user <----------> <view> <-----------> base table 
 Ex2:
 Sql> create view sv2 as select empno,ename,job,sal from emp;
+
+
 Testing:
 ----------------
 Sql> insert into sv2 values(1122,'sai','hr',8000);---allow
 Sql> insert into sv2 values(1122,'warner','sr.hr',9500);----not allow (empno column is 
 primary key column in emp table)
+
+
 With check option:
 -------------------------------------
 It is a constraint which is used to restrict rows on base table through
@@ -52,10 +65,12 @@ A view while performing dml operations.
 Ex:
 Sql> create view sv3 as select * from test1 where sal=18000 
  with check option;
+
 Testing:
 Sql> insert into sv3 values(1025,'scott',12000);---not allow
 Sql> insert into sv3 values(1025,'scott',58000);---not allow
 Sql> insert into sv3 values(1025,'scott',18000);---allowed
+
 With read only:
 -----------------------------
 If we created a view "with read only" clause then we restrict dml operations.we allow "select" and "desc" 
@@ -63,6 +78,9 @@ commands.
 Ex:
 Sql> create view sv4 as select * from dept with read only;
 Note: now we cannot perform dml(insert/update/delete) operations through a view on base table.
+
+
+
 2.complex views:
 --------------------------------
 > a view is called as complex view ,
@@ -150,6 +168,7 @@ Ex:
 Sql> drop view sv1;
 Sql> drop view cv1;
 Sql> drop view fv1;
+
 Diff. B/w synonym and view:
 -----------------------------------------------------
 synonym view
