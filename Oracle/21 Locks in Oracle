@@ -1,0 +1,89 @@
+LOCKS:
+=======
+It is a mechanism which is used to prevent unauthorized access for our resource. All database systems 
+are having two types of locks. Those are,
+i) Row Level Locks
+ii) Table Level Locks
+
+Row Level Locks:
+In row level locking we are locking a row / set of rows from the table. In all databases whenever we are 
+using Commit / Rollback command then only locks are released.
+Ex. On row level locking on a single row:
+SESSION 1:
+Sql> conn system / manager;
+Sql> Update scott.emp set sal=2000 where empno=7788;
+
+ 1row updated.
+Sql> commit;[for releasing locks]
+SESSION2:
+Sql> conn scott/tiger;
+Sql> Update emp set sal=3000 where empno=7788;
+[we cannot perform update operation bcz this row is locked by the user System]
+Ex. on row level locking on set of rows:
+When we are locking set of rows from table then use “for update” clause in select query.
+
+
+SESSION1:
+Sql> conn system / manager;
+Sql> select * from scott.emp where deptno=10 for update;
+Sql> commit;[for releasing locks]
+-------------------------------------------------------------------------------------------------------------------------------------
+
+SESSION2:
+Sql> conn scott/tiger;
+Sql> update emp set sal=3500 where deptno=10;
+[we cannot perform update]
+Dead lock:
+In oracle dead locks occurs whenever two / more than two sessions waiting for data if those sessions are 
+already locked to each other.
+These dead locks also released when we are using commit / rollback command.
+EX:
+SESSION1:
+Sql> conn system / manager;
+Sql> update scott.emp set sal=3000 where empno=7369;
+1row updated.
+Sql> update scott.emp set sal=5000 where empno=7788;
+Error: deadlock defected while waiting for resource.
+Sql> commit;[for locks release]
+SESSION2:
+Sql> conn scott / tiger;
+Sql> update emp set sal=4000 where empno=7788;
+1row updated.
+Sql> update emp set sal=6000 where empno=7369;
+Table level locking:
+In this level we are locking a table (all rows).oracle having two types of table level locking 
+i) Share lock
+ii) Exclusive lock
+Share Lock:
+Shared lock exists when two transactions (users) are granted read access. One transaction gets shared 
+lock on data and when the second transaction requests the same data it is also given a shared lock. Both
+transactions are read-only mode. Here at a time no.of users are locks the resources.
+Updating data not allowed until the shared lock is released by using commit/rollback .
+syntax:
+Lock Table <TN> in share mode;
+EX:
+SESSION1:
+Sql> conn system /manager;
+Sql> lock table emp in share mode;
+Sql> commit;[for releasing locks]
+SESSION2:
+Sql> conn scott /tiger;
+Sql> select * from emp;
+Sql> lock table emp in share mode;
+Exclusive Lock: Exclusive lock when a statement modifies data. Its transaction holds as exclusive lock on 
+data that prevents other transaction from accessing the data and also here at a time only one user lock 
+the resource.
+SYNTAX:
+Lock Table <TN> in exclusive mode;
+EX:
+SESSION1:
+Sql> conn system / manager;
+Sql> lock table emp in exclusive mode;
+Sql> commit;[for releasing locks]
+SESSION2:
+Sql> conn scott/tiger;
+Sql> select * from emp;
+Sql> lock table emp in exclusive mode;
+(or)
+SQL>lock table emp in share mode;
+[cannot perform any locks].
