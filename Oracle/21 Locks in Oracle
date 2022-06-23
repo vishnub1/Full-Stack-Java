@@ -38,6 +38,8 @@ In oracle dead locks occurs whenever two / more than two sessions waiting for da
 already locked to each other.
 These dead locks also released when we are using commit / rollback command.
 EX:
+
+
 SESSION1:
 Sql> conn system / manager;
 Sql> update scott.emp set sal=3000 where empno=7369;
@@ -45,6 +47,8 @@ Sql> update scott.emp set sal=3000 where empno=7369;
 Sql> update scott.emp set sal=5000 where empno=7788;
 Error: deadlock defected while waiting for resource.
 Sql> commit;[for locks release]
+
+
 SESSION2:
 Sql> conn scott / tiger;
 Sql> update emp set sal=4000 where empno=7788;
@@ -54,6 +58,8 @@ Table level locking:
 In this level we are locking a table (all rows).oracle having two types of table level locking 
 i) Share lock
 ii) Exclusive lock
+
+
 Share Lock:
 Shared lock exists when two transactions (users) are granted read access. One transaction gets shared 
 lock on data and when the second transaction requests the same data it is also given a shared lock. Both
@@ -62,10 +68,14 @@ Updating data not allowed until the shared lock is released by using commit/roll
 syntax:
 Lock Table <TN> in share mode;
 EX:
+
+
 SESSION1:
 Sql> conn system /manager;
 Sql> lock table emp in share mode;
 Sql> commit;[for releasing locks]
+
+
 SESSION2:
 Sql> conn scott /tiger;
 Sql> select * from emp;
@@ -76,10 +86,14 @@ the resource.
 SYNTAX:
 Lock Table <TN> in exclusive mode;
 EX:
+
+
 SESSION1:
 Sql> conn system / manager;
 Sql> lock table emp in exclusive mode;
 Sql> commit;[for releasing locks]
+
+
 SESSION2:
 Sql> conn scott/tiger;
 Sql> select * from emp;
