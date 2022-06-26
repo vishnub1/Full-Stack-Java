@@ -217,6 +217,7 @@ President 0 0 0 0 0 0 0 0 1 0 0 0 0 0
 ==========================================================
 Note: here "1" is represented with rowid of a particular row in a table.
 =====
+
 Note:
 =====
 - if we want to view index name along with index type then we use
@@ -225,6 +226,7 @@ Ex:
 Sql> desc user_indexes;
 Sql> select index_name,index_type from user_indexes
  where table_name='emp';
+
 Index_name index_type
 ------------------------------ ---------------------
 Sind normal(b-tree)
@@ -232,6 +234,8 @@ Bitind bitmap
 Find function-based normal(b-tree)
 Uind normal(b-tree)
 Cind normal(b-tree)
+
+
 How to drop an index:
 =====================
 Sql> drop index <index name>;
