@@ -1,0 +1,240 @@
+            Indexes:
+          ============
+- index is an database object which is used to retrieve data from a table fastly.
+- a database index will work as a book index page in text book.in text book by using index page we can 
+retrieve a particular topic from a text book very fastly same as by using database index object we can retrieve a 
+particular row from a table vaery fastly.
+- by using indexes we can save time and improve the performance of database.these indexes are created by 
+dba.
+- index object can be created on a particular column (or) columns
+Of a table and these columns are called as "index key columns".
+- all databases are supporting the following two types of searching mechanisms those are,
+1. Table scan(default)
+2. Index scan
+
+
+1.table scan:
+=============
+- it a default scanning mechanism for retrieving data from table.in this mechanism oracle server is scanning 
+entire table(top - bottom)
+Ex:
+Sql> select * from emp where sal=3000;
+
+Sol:
+====
+sal 
+--------
+800 
+1600 
+1250 
+2975 
+1250 
+2850 
+2450 where sal=3000;
+3000 ( in this table scan we are comparing where condition 14 times)
+5000 
+1500 
+1100 
+950 
+3000 
+1300 
+
+
+2) index scan:
+=============
+- in index scan mechanism oracle server scanning only indexed column from a table. In this mechanism we 
+again follow the follwoing two methods,
+
+
+I) automatically / implicitly:
+==========================
+- whenever we are creating a table along with "primary key " /
+"unique" key constraint then internally system is creating an index object on that particular column automatically.
+Ex:
+Sql> create table test1(eid int primary key,ename varchar2(10));
+Sql> create table test2(sno int unique,name varchar2(10));
+
+
+Note:
+=====
+- if we want to view index name along with column name of a particular table then we use 
+"user_ind_columns" data dictionary.
+Ex:
+Sql> desc user_ind_columns;
+Sql> select column_name,index_name from user_ind_columns
+Where table_name='test1';
+Column_name index_name
+------------------------- ----------------------
+Eid sys_c005501
+Sql> select column_name,index_name from user_ind_columns
+Where table_name='test2';
+Column_name index_name
+------------------------- ----------------------
+Sno sys_c005502
+
+
+Ii) manually / explicitly:
+========================
+- when user want to create an index object on a particular column/(s) then we follow the following syntaxs,
+
+
+Types of indexes:
+=================
+1. B - tree index (default index)
+- simple index
+- composite index
+- unique index
+- functional based index
+2. Bitmap index
+
+
+Simple index:
+=============
+- when we created an index on a single column then we called as 
+Simple index.
+Syntax:
+---------------
+Create index <index name> on <tn>(<column name>);
+Ex:
+Sql> create index sind on emp(sal);
+Index created.
+Ex:
+Sql> select * from emp where sal=3000;
+
+Sol:
+====
+ b-tree(binary tree)
+ --------------------------------------
+ (<) |lp| 3000 |rp| (>=)
+ |
+lp| 2975 | rp lp | 5000 | rp
+ | |
+2850|*, 2450|*, 1600|*, 1500|* | 3000 |*,*|
+1300|*, 1250|*,*, 1100|*, 950|*, 800|*
+Note: in index scan we are comparing 3 times.which is much faster than 
+ table scan(14 times comparing).here " * " is represent rowid.
+
+
+Composite index:
+================
+- when we created an index on multiple columns then we called as 
+Composite index.
+Syntax:
+---------------
+Create index <index name> on <tn>(<column name1>,<column name2>,..........);
+Ex:
+Ex:
+Sql> create index cind on emp(deptno,job);
+Index created.
+Note: oracle server uses above index when "select" query
+With where clause is based on leading column of index,i.e (deptno). 
+Ex:
+Sql> select * from emp where deptno=10;(index scan)
+Sql> select * from emp where deptno=10 and job='clerk';(index scan)
+Sql> select * from emp where job='clerk';(table scan)
+
+
+Unique index:
+=============
+- when we create an index based on "unique constraint" column is called unique index.unique index does 
+not allow duplicate values.
+Syntax:
+=======
+Create uinque index <index name> on <tn>(<column name>);
+Ex:
+Ex:
+Sql> create unique index uind on dept(dname);
+Index created.
+Testing:
+Sql> insert into dept values(50,'sales','hyd')
+Error at line 1:
+Ora-00001: unique constraint (scott.uind) violated.
+Note: primary key columns and unique columns are automatically indexed
+By oracle.
+
+
+Functional based index:
+========================
+- when we create an index based on function then we called as functional based index.
+Syntax:
+---------------
+Create index <index name> on <tn>(<function name>(column name))
+Ex:
+Ex:
+Sql> create index ind4 on emp(upper(ename));
+Index created.
+Sql> select * from emp where upper( ename)='scott';(index scan)
+
+
+2. Bitmap index:
+===============
+- bitmap index is created on distinct values of a particular column.generally bitmap indexes are created on 
+low cardinality of columns.
+- when we create bitmap index internally oracle server is preparing bitmap indexed table with bit numbers 
+are 1 and 0.here 1 is represent condition is true where as 0 is represent condition is false.
+
+
+Cardinality:
+============
+- it referes to the uinqueness of data values containe in particular column of table.
+
+
+How to find cardinality of a column:
+====================================
+Cardinality of column = no.of distinct values of a column
+ ------------------------------------------------------------------
+no.of rows in a table
+Ex:
+cardinality of empno = 14
+ --------
+ 14
+cardinality of empno is "1" ----( creating btree index )
+Ex:
+ cardinality of job = 5
+ --------
+ 14
+cardinality of job = 0.35 ------ (creating bit map index )
+Syntax:
+========
+Create bitmap index <index name> on <tn>(<column name>);
+Ex:
+Create bitmap index bitind on emp(job);
+Ex:
+Select * from emp where job='manager';
+bitmap indexed table
+=====================
+Job 1 2 3 4 5 6 7 8 9 10 11 12 13 14
+========================================================
+Clerk 1 0 0 0 0 0 0 0 0 0 1 1 0 1
+---------------------------------------------------------------------------------------------------------------
+Salesman 0 1 1 0 1 0 0 0 0 1 0 0 0 0
+---------------------------------------------------------------------------------------------------------------
+Manager 0 0 0 1 0 1 1 0 0 0 0 0 0 0
+---------------------------------------------------------------------------------------------------------------
+Analyst 0 0 0 0 0 0 0 1 0 0 0 0 1 0
+---------------------------------------------------------------------------------------------------------------
+President 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+==========================================================
+Note: here "1" is represented with rowid of a particular row in a table.
+=====
+Note:
+=====
+- if we want to view index name along with index type then we use
+"user_indexes" datadictionary.
+Ex:
+Sql> desc user_indexes;
+Sql> select index_name,index_type from user_indexes
+ where table_name='emp';
+Index_name index_type
+------------------------------ ---------------------
+Sind normal(b-tree)
+Bitind bitmap
+Find function-based normal(b-tree)
+Uind normal(b-tree)
+Cind normal(b-tree)
+How to drop an index:
+=====================
+Sql> drop index <index name>;
+Ex:
+Sql> drop index sind;
+Sql> drop index bitind;
