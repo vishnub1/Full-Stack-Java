@@ -1,0 +1,101 @@
+Cluster:
+> cluster is a db object which contain group of tables together and also it shares same datablock.
+> generally cluster are used to improve performance of the joins and also clusters are created by dba only.
+> cluster table must have a common column name.this common column is also called as cluster key.generally 
+cluster are created at the time of table creation.
+Steps to create cluster in oracle:
+-------------------------------------------
+Step1: create cluster:
+-----------------------------
+Syntax:
+---------------
+Create cluster <cluster name>(<common column name> <dt>[size]);
+Ex:
+Sql> create cluster emp_dept(deptno int);
+Cluster created.
+Step2:create index on cluster:
+--------------------------------------------------------------
+Syntax:
+--------------
+Create index <index name> on cluster <cluster name>;
+Ex:
+Sql> create index abc on cluster emp_dept;
+Index created.
+Step3:create cluster tables:
+---------------------------------------------------------
+Syntax:
+--------------
+Create table <tn>(<col1><dt>[size],<col2><dt>[size]...........)
+Cluster <cluster name> (common column name);
+Ex:
+Sql> create table emp1(empno int,ename varchar2(20),deptno int)
+Cluster emp_dept(deptno);
+Table created.
+Sql> create table dept1(deptno int,dname varchar2(20),loc varchar2(20))cluster 
+emp_dept(deptno);
+Table created.
+Sql> desc emp1;
+name null? Type
+----------------------------------------------------- -------- ------------------------------
+empno number(38)
+ename varchar2(20)
+deptno number(38)
+Sql> desc dept1;
+name null? Type
+----------------------------------------------------- -------- ------------------------------
+deptno number(38)
+dname varchar2(20)
+loc varchar2(20)
+Sql> insert into emp1 values(1,'a',10);
+Sql> insert into emp1 values(2,'b',20);
+Sql> select * from emp1;
+ empno ename deptno
+---------- -------------------- ----------
+ 1 a 10
+ 2 b 20
+Sql> insert into dept1 values(10,'x','hyd');
+Sql> insert into dept1 values(20,'z','up');
+Sql> select * from dept1;
+ deptno dname loc
+---------- -------------------- --------------------
+ 10 x hyd
+ 20 z up
+Note: these two tables having common column(deptno) and having in the same memory so that their rowid's 
+are same.
+Sql> select rowid from emp1;
+Rowid
+------------------
+Aaaozuaaeaaaaheaaa
+Aaaozuaaeaaaahfaaa
+Sql> select rowid from dept1;
+Rowid
+------------------
+Aaaozuaaeaaaaheaaa
+Aaaozuaaeaaaahfaaa
+Note:
+-----------
+Sql> desc user_clusters;
+Sql> select cluster_name from user_clusters;
+Cluster_name
+------------------------------
+Emp_dept
+Note:
+----------
+Sql> desc user_tables;
+Sql> select table_name from user_tables where cluster_name='emp_dept';
+Table_name
+------------------------------
+Dept1
+Emp1
+Dropping cluster with tables:
+------------------------------------------------------------
+Syntax:
+--------------
+Sql> drop cluster <cluster name>;
+Sql> drop cluster emp_dept;
+Error at line 1:
+Ora-00951: cluster not empty
+> to overcome the above error we should use
+" including tables " clause to drop cluster along with tables.
+Sql> drop cluster emp_dept including tables;
+Cluster dropped.
