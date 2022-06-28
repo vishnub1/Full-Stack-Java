@@ -1,4 +1,6 @@
-Cluster:
+      Cluster:
+    ===========
+    
 > cluster is a db object which contain group of tables together and also it shares same datablock.
 > generally cluster are used to improve performance of the joins and also clusters are created by dba only.
 > cluster table must have a common column name.this common column is also called as cluster key.generally 
