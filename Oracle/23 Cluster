@@ -47,6 +47,8 @@ deptno number(38)
 Sql> desc dept1;
 name null? Type
 ----------------------------------------------------- -------- ------------------------------
+
+
 deptno number(38)
 dname varchar2(20)
 loc varchar2(20)
@@ -64,6 +66,7 @@ Sql> select * from dept1;
 ---------- -------------------- --------------------
  10 x hyd
  20 z up
+
 Note: these two tables having common column(deptno) and having in the same memory so that their rowid's 
 are same.
 Sql> select rowid from emp1;
@@ -78,6 +81,7 @@ Aaaozuaaeaaaaheaaa
 Aaaozuaaeaaaahfaaa
 Note:
 -----------
+
 Sql> desc user_clusters;
 Sql> select cluster_name from user_clusters;
 Cluster_name
