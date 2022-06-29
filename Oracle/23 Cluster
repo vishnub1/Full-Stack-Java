@@ -11,6 +11,8 @@ Step1: create cluster:
 -----------------------------
 Syntax:
 ---------------
+
+
 Create cluster <cluster name>(<common column name> <dt>[size]);
 Ex:
 Sql> create cluster emp_dept(deptno int);
